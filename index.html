@@ -198,13 +198,31 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 .hl.azul{border-left-color:var(--c-medio);background:rgba(44,104,144,0.05);border-color:rgba(44,104,144,0.2);}
 .hl.center{border-left:none;border-top:4px solid var(--c-teal);border-radius:8px;text-align:center;}
 
-/* Product card */
-.prod{background:var(--c-gris);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;position:relative;}
-.prod-img{background:#dde2ea;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:var(--t-label);color:#999;text-transform:uppercase;letter-spacing:0.08em;flex-shrink:0;overflow:hidden;flex-direction:column;gap:0.3rem;}
-.prod-img img{width:100%;height:100%;object-fit:cover;}
-.prod-body{padding:clamp(0.45rem,0.9vw,0.85rem);}
-.prod-name{font-size:var(--t-small);font-weight:700;color:var(--c-marino);}
-.prod-desc{font-size:clamp(0.52rem,0.82vw,0.68rem);color:var(--c-texto);line-height:1.4;margin-top:0.15rem;}
+/* Product card — compacta con modal */
+.prod {
+  background: var(--c-gris);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.prod:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.10); }
+.prod-img {
+  background: #dde2ea;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.prod-img img { width: 100%; height: 100%; object-fit: cover; }
+.prod-body { padding: clamp(0.35rem,0.7vw,0.65rem); text-align: center; }
+.prod-name { font-size: var(--t-small); font-weight: 700; color: var(--c-marino); line-height: 1.3; }
+.prod-desc { display: none; } /* visible solo en modal */
 .badge-fw{position:absolute;top:0.45rem;right:0.45rem;background:var(--c-teal);color:#fff;font-size:clamp(0.55rem,0.82vw,0.68rem);font-weight:700;padding:0.28rem 0.6rem;border-radius:4px;letter-spacing:0.04em;white-space:nowrap;box-shadow:0 2px 8px rgba(25,146,139,0.4);}
 
 /* Grids */
@@ -339,9 +357,9 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
     width: clamp(180px, 55vw, 280px);
   }
 
-  /* diagramas de flujo: apilados verticalmente con flecha ↓ */
-  .flow { flex-direction: column; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-  .fa   { transform: rotate(90deg); font-size: 1rem; }
+  /* diagramas de flujo: wrap horizontal, segunda fila si no entran */
+  .flow { flex-wrap: wrap; justify-content: center; row-gap: 0.6rem; column-gap: 0; }
+  .fa   { font-size: 0.85rem; }
 
   /* stat cards en g3: asegurar que no se corten */
   .stat-card { padding: clamp(0.8rem,3vw,1.5rem); }
@@ -373,6 +391,58 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 }
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.2s!important;}html{scroll-behavior:auto;}}
+
+/* ── MODAL ───────────────────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(16,20,32,0.82);
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: #fff;
+  border-radius: 16px;
+  max-width: min(480px, 92vw);
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  animation: modal-in 0.22s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(0.93) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  background: #dde2ea;
+}
+.modal-body { padding: 1.2rem 1.4rem 1.5rem; }
+.modal-name { font-size: clamp(1rem,2.5vw,1.3rem); font-weight: 800; color: var(--c-marino); }
+.modal-fw   { display: inline-block; background: var(--c-teal); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; margin: 0.4rem 0 0.6rem; }
+.modal-desc { font-size: clamp(0.82rem,1.5vw,0.95rem); color: var(--c-texto); line-height: 1.55; }
+.modal-close {
+  position: fixed;
+  top: 1rem; right: 1rem;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.22); }
 </style>
 </head>
 <body>
@@ -404,8 +474,8 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 <section class="slide dark" data-s="portada" data-n="1">
   <div class="sb">
     <div class="cnt" style="border-right:1px solid rgba(255,255,255,0.07);">
-      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;">
-        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="max-height:min(8vh,70px);object-fit:contain;display:block;">
+      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;align-self:flex-start;">
+        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;object-fit:contain;display:block;">
       </div>
       <h1 class="rv w" style="margin-top:var(--gap);">Equipar<br>para<br><span class="accent">Equipar</span></h1>
       <p class="rv dim" style="max-width:36ch;">Tecnología Asistiva para instituciones de rehabilitación de la Provincia de Córdoba</p>
@@ -533,8 +603,8 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
   <div class="sb">
     <div class="cnt">
       <span class="eyebrow azul rv">Quiénes somos</span>
-      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;border:1px solid rgba(0,0,0,0.06);">
-        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="max-height:min(8vh,70px);object-fit:contain;display:block;">
+      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;border:1px solid rgba(0,0,0,0.06);align-self:flex-start;">
+        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;object-fit:contain;display:block;">
       </div>
       <p class="rv" style="font-size:var(--t-h3);font-weight:600;color:var(--c-texto);max-width:44ch;line-height:1.4;">Diseño propio. Conocimiento clínico. Hecho en Córdoba.</p>
       <div class="divider rv"></div>
@@ -990,8 +1060,8 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 <section class="slide dark" data-s="cierre" data-n="24">
   <div class="sb" style="background:var(--c-marino);">
     <div class="cnt" style="align-items:center;text-align:center;justify-content:center;gap:var(--gap);">
-      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;">
-        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="max-height:min(8vh,70px);object-fit:contain;display:block;">
+      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;align-self:flex-start;">
+        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;object-fit:contain;display:block;">
       </div>
       <div class="divider rv" style="align-self:center;"></div>
       <div class="quote rv" style="max-width:52ch;padding-left:1.5rem;color:rgba(255,255,255,0.82);">Dismascapacidad existe porque creemos que la tecnología asistiva funciona cuando llega bien acompañada.</div>
@@ -1006,6 +1076,19 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
   </div>
   <!-- SPEAKER NOTE: La última slide. Dejarla proyectada. -->
 </section>
+
+<!-- ── MODAL DE PRODUCTO ── -->
+<div class="modal-overlay" id="prodModal" role="dialog" aria-modal="true">
+  <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+  <div class="modal-box">
+    <img class="modal-img" id="modalImg" src="" alt="">
+    <div class="modal-body">
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-fw"  id="modalFw"  style="display:none;">✦ Firmware actualizado</div>
+      <div class="modal-desc" id="modalDesc"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ============================================================
      JAVASCRIPT
@@ -1094,6 +1177,53 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
     });
   });
 
+})();
+
+/* --- Modal de producto --- */
+(function(){
+  const overlay  = document.getElementById('prodModal');
+  const closeBtn = document.getElementById('modalClose');
+  const mImg     = document.getElementById('modalImg');
+  const mName    = document.getElementById('modalName');
+  const mFw      = document.getElementById('modalFw');
+  const mDesc    = document.getElementById('modalDesc');
+
+  function openModal(card) {
+    const img  = card.querySelector('.prod-img img');
+    const name = card.querySelector('.prod-name');
+    const desc = card.querySelector('.prod-desc');
+    const fw   = card.querySelector('.badge-fw');
+
+    mImg.src       = img  ? img.src  : '';
+    mImg.alt       = name ? name.textContent : '';
+    mName.textContent = name ? name.textContent : '';
+    mDesc.textContent = desc ? desc.textContent : '';
+    mFw.style.display = fw ? 'inline-block' : 'none';
+
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Abrir al clickear cualquier .prod
+  document.querySelectorAll('.prod').forEach(function(card){
+    card.addEventListener('click', function(){ openModal(card); });
+  });
+
+  // Cerrar con botón o click fuera del box
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closeModal();
+  });
+
+  // Cerrar con Escape
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeModal();
+  });
 })();
 
 /* --- QR Code generation --- */
