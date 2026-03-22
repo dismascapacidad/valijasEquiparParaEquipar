@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estilo B — Franja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #e8ecef; display: flex; align-items: center; justify-content: center; font-family: 'Manrope', sans-serif; }
+
+  .slide {
+    width: 100vw; height: 100vh;
+    background: #F4F6F9;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Barra superior — identidad de sección */
+  .top-bar {
+    height: clamp(4px, 0.7vh, 8px);
+    background: linear-gradient(90deg, #101420 0%, #2C6890 40%, #19928B 100%);
+    flex-shrink: 0;
+  }
+
+  /* Header de la slide */
+  .slide-header {
+    background: #101420;
+    padding: clamp(1rem, 2.5vw, 2rem) clamp(2rem, 5vw, 5rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .header-logo {
+    font-size: clamp(0.75rem, 1.3vw, 1rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+  .header-logo .plus { color: #19928B; }
+  .header-nav {
+    display: flex; gap: clamp(0.5rem, 1.5vw, 1.5rem);
+    align-items: center;
+  }
+  .nav-pill {
+    font-size: clamp(0.55rem, 0.85vw, 0.7rem);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.9rem;
+    border-radius: 20px;
+    color: rgba(255,255,255,0.4);
+    border: 1px solid rgba(255,255,255,0.12);
+    cursor: default;
+  }
+  .nav-pill.active {
+    background: #19928B;
+    color: #fff;
+    border-color: #19928B;
+  }
+
+  /* Contenido central */
+  .slide-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .body-left {
+    padding: clamp(2rem, 5vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Acento vertical izquierdo */
+  .body-left::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 20%; bottom: 20%;
+    width: 4px;
+    background: linear-gradient(180deg, transparent, #19928B, transparent);
+  }
+
+  .eyebrow {
+    font-size: clamp(0.6rem, 1vw, 0.78rem);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #2C6890;
+    margin-bottom: clamp(0.8rem, 1.5vw, 1.4rem);
+    animation: fadeSlide 0.6s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .main-title {
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: #101420;
+    animation: fadeSlide 0.6s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .main-title .accent {
+    color: #19928B;
+    display: block;
+  }
+
+  .subtitle {
+    margin-top: clamp(1.2rem, 2.5vw, 2.5rem);
+    font-size: clamp(0.8rem, 1.4vw, 1.05rem);
+    font-weight: 400;
+    color: #444;
+    line-height: 1.65;
+    max-width: 36ch;
+    animation: fadeSlide 0.6s 0.22s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .tag-row {
+    margin-top: clamp(1.5rem, 3vw, 3rem);
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+    animation: fadeSlide 0.6s 0.35s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .tag {
+    font-size: clamp(0.55rem, 0.9vw, 0.72rem);
+    font-weight: 600;
+    padding: 0.35rem 0.9rem;
+    border-radius: 3px;
+    border: 1px solid;
+  }
+  .tag-teal  { color: #19928B; border-color: #19928B; background: rgba(25,146,139,0.06); }
+  .tag-azul  { color: #2C6890; border-color: #2C6890; background: rgba(44,104,144,0.06); }
+  .tag-dark  { color: #101420; border-color: #101420; background: rgba(16,20,32,0.04); }
+
+  /* Panel derecho — caja de dato destacado */
+  .body-right {
+    background: #101420;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(2rem, 5vw, 4rem);
+    position: relative;
+    overflow: hidden;
+  }
+  .body-right::before {
+    content: '';
+    position: absolute;
+    width: clamp(200px, 40vw, 380px);
+    height: clamp(200px, 40vw, 380px);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(25,146,139,0.18) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .stat-block {
+    position: relative; z-index: 1;
+    text-align: center;
+    animation: scaleIn 0.7s 0.4s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .stat-number {
+    font-size: clamp(3rem, 10vw, 8rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #19928B;
+    letter-spacing: -0.05em;
+  }
+  .stat-label {
+    font-size: clamp(0.65rem, 1.2vw, 0.9rem);
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: 0.8rem;
+  }
+  .stat-source {
+    font-size: clamp(0.5rem, 0.8vw, 0.65rem);
+    color: rgba(255,255,255,0.2);
+    margin-top: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* Footer */
+  .slide-footer {
+    background: #F4F6F9;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    padding: clamp(0.6rem, 1.2vw, 1rem) clamp(2rem, 5vw, 5rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .footer-text {
+    font-size: clamp(0.5rem, 0.8vw, 0.68rem);
+    color: #999;
+    letter-spacing: 0.08em;
+  }
+  .progress {
+    display: flex; gap: 0.3rem;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: #ddd; }
+  .dot.active { background: #19928B; }
+
+  .style-label {
+    position: absolute;
+    top: 50%;
+    right: clamp(1rem, 2vw, 2rem);
+    font-size: clamp(0.55rem, 0.85vw, 0.7rem);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    writing-mode: vertical-rl;
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="top-bar"></div>
+
+  <!-- Header -->
+  <div class="slide-header">
+    <div class="header-logo">dis<span class="plus">+</span>capacidad</div>
+    <div class="header-nav">
+      <div class="nav-pill active">Contexto</div>
+      <div class="nav-pill">Quiénes somos</div>
+      <div class="nav-pill">La valija</div>
+      <div class="nav-pill">Impacto</div>
+      <div class="nav-pill">Cierre</div>
+    </div>
+  </div>
+
+  <!-- Cuerpo -->
+  <div class="slide-body">
+    <div class="body-left">
+      <div class="eyebrow">Bienvenida</div>
+      <h1 class="main-title">
+        Equipar<br>para<br><span class="accent">Equipar</span>
+      </h1>
+      <p class="subtitle">Tecnología Asistiva para instituciones de rehabilitación de la Provincia de Córdoba</p>
+      <div class="tag-row">
+        <span class="tag tag-teal">Programa AcceDer</span>
+        <span class="tag tag-azul">Gobierno de Córdoba</span>
+        <span class="tag tag-dark">Marzo 2025</span>
+      </div>
+    </div>
+    <div class="body-right">
+      <div class="stat-block">
+        <div class="stat-number">20</div>
+        <div class="stat-label">Instituciones equipadas</div>
+        <div class="stat-source">Provincia de Córdoba · 2025</div>
+      </div>
+      <span class="style-label">Estilo B — Franja</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="slide-footer">
+    <div class="footer-text">dis+capacidad · Equipar para Equipar</div>
+    <div class="progress">
+      <div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

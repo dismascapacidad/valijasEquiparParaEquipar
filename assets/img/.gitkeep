@@ -1,0 +1,17 @@
+# Carpeta para imágenes de productos y fotos del evento.
+# Archivos esperados:
+#   logo_dis.png           ← logo horizontal dis+capacidad (reemplaza placeholders en index.html)
+#   belen.jpg              ← foto de Belén (slides 2.3, 4.1, 4.5)
+#   brazo_articulado.jpg
+#   atril.jpg
+#   dismouse.jpg
+#   disjoystick.jpg
+#   teclado_sobreteclado.jpg
+#   pulsadores_usb.jpg
+#   pulsadores_plug.jpg
+#   discom.jpg
+#
+# Para reemplazar un placeholder en index.html:
+#   Buscar "img-placeholder" en el slide correspondiente
+#   Reemplazar el <div class="img-placeholder ..."> con:
+#   <img src="assets/img/NOMBRE_ARCHIVO.jpg" alt="descripción" style="max-height:min(40vh,280px);border-radius:10px;object-fit:contain;">

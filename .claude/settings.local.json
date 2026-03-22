@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git clone https://github.com/zarazhangrui/frontend-slides.git ~/.claude/skills/frontend-slides)",
+      "Bash(start \"\" \"G:\\\\Otros ordenadores\\\\Gateway\\\\dis+ capacidad\\\\Presentacion dis+capacidad\\\\.claude-design\\\\slide-previews\\\\style-a.html\")",
+      "Bash(start \"\" \"G:\\\\Otros ordenadores\\\\Gateway\\\\dis+ capacidad\\\\Presentacion dis+capacidad\\\\.claude-design\\\\slide-previews\\\\style-b.html\")",
+      "Bash(start \"\" \"G:\\\\Otros ordenadores\\\\Gateway\\\\dis+ capacidad\\\\Presentacion dis+capacidad\\\\.claude-design\\\\slide-previews\\\\style-c.html\")",
+      "Bash(start \"\" \"G:\\\\Otros ordenadores\\\\Gateway\\\\dis+ capacidad\\\\Presentacion dis+capacidad\\\\presentacion-ta.html\")",
+      "Bash(timeout /t 1 /nobreak)",
+      "Bash(cmd.exe /c \"start \"\"\"\" \"\"G:\\\\Otros ordenadores\\\\Gateway\\\\dis+ capacidad\\\\Presentacion dis+capacidad\\\\.claude-design\\\\slide-previews\\\\style-b.html\"\"\")",
+      "Bash(cmd.exe /c \"start \"\"\"\" \"\"G:\\\\Otros ordenadores\\\\Gateway\\\\dis+ capacidad\\\\Presentacion dis+capacidad\\\\.claude-design\\\\slide-previews\\\\style-c.html\"\"\")",
+      "Bash(powershell.exe -Command \"Invoke-Item ''G:\\\\Otros ordenadores\\\\Gateway\\\\dis+ capacidad\\\\Presentacion dis+capacidad\\\\.claude-design\\\\slide-previews\\\\style-b.html''\")",
+      "Bash(powershell.exe -Command \"Invoke-Item ''G:\\\\Otros ordenadores\\\\Gateway\\\\dis+ capacidad\\\\Presentacion dis+capacidad\\\\.claude-design\\\\slide-previews\\\\style-c.html''\")"
+    ]
+  }
+}

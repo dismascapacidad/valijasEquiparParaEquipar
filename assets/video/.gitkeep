@@ -1,0 +1,9 @@
+# Carpeta para videos de casos clínicos.
+# Archivos esperados:
+#   caso_1.mp4   ← video Belén caso clínico 1
+#   caso_2.mp4   ← video Belén caso clínico 2
+#   caso_3.mp4   ← video Belén caso clínico 3
+#
+# Cuando los archivos estén en esta carpeta, el reproductor en index.html
+# los detecta automáticamente y oculta el placeholder azul.
+# Formato recomendado: MP4 H.264, resolución máx 1080p.

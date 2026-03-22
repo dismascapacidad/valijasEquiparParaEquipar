@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estilo C — Tensión</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; font-family: 'DM Sans', sans-serif; overflow: hidden; }
+
+  .slide {
+    width: 100vw; height: 100vh;
+    display: grid;
+    /* columna angosta oscura, resto blanco */
+    grid-template-columns: clamp(180px, 22vw, 280px) 1fr;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── Panel izquierdo — oscuro, identidad ── */
+  .left-col {
+    background: #101420;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1.5rem, 3vw, 3rem) clamp(1.2rem, 2.5vw, 2.5rem);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Línea de acento en el borde derecho */
+  .left-col::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, transparent 0%, #19928B 30%, #19928B 70%, transparent 100%);
+  }
+
+  .logo-block { }
+  .logo-mark {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .logo-mark .plus { color: #19928B; }
+  .logo-sub {
+    font-size: clamp(0.48rem, 0.75vw, 0.62rem);
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+  }
+
+  /* Índice de secciones — navegación vertical */
+  .section-index {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 1vh, 1rem);
+    flex: 1;
+    justify-content: center;
+    padding: clamp(1.5rem, 3vh, 3rem) 0;
+  }
+  .sec-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: clamp(0.52rem, 0.85vw, 0.68rem);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    cursor: default;
+    transition: color 0.3s;
+  }
+  .sec-item.active {
+    color: rgba(255,255,255,0.9);
+  }
+  .sec-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .sec-item.active .sec-dot { background: #19928B; width: 6px; height: 6px; }
+
+  .left-footer {
+    font-size: clamp(0.45rem, 0.72vw, 0.58rem);
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── Panel derecho — contenido ── */
+  .right-col {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Acento de sección — barra de color en top */
+  .section-stripe {
+    height: clamp(3px, 0.5vh, 6px);
+    background: #19928B;
+    flex-shrink: 0;
+    transform-origin: left;
+    animation: stripeExpand 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+  }
+
+  /* Número de sección gigante — decorativo */
+  .bg-number {
+    position: absolute;
+    right: clamp(-2rem, -3vw, -4rem);
+    bottom: clamp(-2rem, -3vh, -4rem);
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(10rem, 28vw, 22rem);
+    line-height: 1;
+    color: rgba(25,146,139,0.05);
+    user-select: none;
+    letter-spacing: -0.05em;
+  }
+
+  /* Contenido principal */
+  .slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2.5rem, 5vw, 5rem);
+    position: relative;
+    z-index: 1;
+  }
+
+  .eyebrow {
+    font-size: clamp(0.58rem, 0.95vw, 0.78rem);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #2C6890;
+    margin-bottom: clamp(0.8rem, 1.5vw, 1.5rem);
+    animation: revealUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+  }
+
+  .main-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 8vw, 6.5rem);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    color: #101420;
+    animation: revealUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+  }
+  .main-title .accent {
+    color: #19928B;
+  }
+  .main-title .outline {
+    -webkit-text-stroke: 2px #101420;
+    color: transparent;
+  }
+
+  .divider {
+    width: clamp(2.5rem, 5vw, 4rem);
+    height: 2px;
+    background: #19928B;
+    margin: clamp(1.2rem, 2.5vw, 2.5rem) 0;
+    animation: revealUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.3s both;
+  }
+
+  .subtitle {
+    font-size: clamp(0.8rem, 1.5vw, 1.05rem);
+    font-weight: 300;
+    color: #666;
+    line-height: 1.7;
+    max-width: 42ch;
+    animation: revealUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.4s both;
+  }
+
+  .bottom-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: clamp(1.2rem, 2.5vw, 2.5rem) clamp(2.5rem, 5vw, 5rem);
+    border-top: 1px solid rgba(0,0,0,0.06);
+    flex-shrink: 0;
+  }
+  .bottom-meta {
+    font-size: clamp(0.5rem, 0.82vw, 0.66rem);
+    color: #bbb;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .slide-counter {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.55rem, 0.9vw, 0.72rem);
+    color: #101420;
+    letter-spacing: 0.05em;
+  }
+  .slide-counter span { color: #19928B; }
+
+  .style-label {
+    position: absolute;
+    top: clamp(0.8rem, 1.5vw, 1.5rem);
+    right: clamp(1.5rem, 3vw, 3rem);
+    font-size: clamp(0.5rem, 0.8vw, 0.65rem);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(25,146,139,0.5);
+  }
+
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes stripeExpand {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <!-- Panel izquierdo -->
+  <div class="left-col">
+    <div class="logo-block">
+      <div class="logo-mark">dis<span class="plus">+</span>capacidad</div>
+      <div class="logo-sub">Tecnología Asistiva</div>
+    </div>
+
+    <div class="section-index">
+      <div class="sec-item active">
+        <div class="sec-dot"></div>Portada
+      </div>
+      <div class="sec-item">
+        <div class="sec-dot"></div>Contexto
+      </div>
+      <div class="sec-item">
+        <div class="sec-dot"></div>Quiénes somos
+      </div>
+      <div class="sec-item">
+        <div class="sec-dot"></div>La valija
+      </div>
+      <div class="sec-item">
+        <div class="sec-dot"></div>Impacto
+      </div>
+      <div class="sec-item">
+        <div class="sec-dot"></div>Cierre
+      </div>
+    </div>
+
+    <div class="left-footer">Córdoba · 2025</div>
+  </div>
+
+  <!-- Panel derecho -->
+  <div class="right-col">
+    <div class="section-stripe"></div>
+    <div class="bg-number">00</div>
+    <span class="style-label">Estilo C — Tensión</span>
+
+    <div class="slide-content">
+      <div class="eyebrow">Gobierno de Córdoba · Programa AcceDer</div>
+      <h1 class="main-title">
+        Equipar<br>
+        para<br>
+        <span class="accent">Equipar</span>
+      </h1>
+      <div class="divider"></div>
+      <p class="subtitle">
+        Tecnología Asistiva para instituciones<br>
+        de rehabilitación de la Provincia de Córdoba
+      </p>
+    </div>
+
+    <div class="bottom-row">
+      <div class="bottom-meta">dis+capacidad · Equipar para Equipar · Marzo 2025</div>
+      <div class="slide-counter"><span>01</span> / 24</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

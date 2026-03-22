@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equipar para Equipar — dis+capacidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* ============================================================
+   VARIABLES — cambiar aquí para ajustar todo el look
+   ============================================================ */
+:root {
+  --c-marino:  #101420;
+  --c-medio:   #2C6890;
+  --c-teal:    #19928B;
+  --c-blanco:  #FFFFFF;
+  --c-gris:    #F4F6F9;
+  --c-texto:   #444444;
+
+  --font: 'Manrope', sans-serif;
+  --ease: cubic-bezier(0.16,1,0.3,1);
+
+  --header-h: clamp(50px,6.5vh,66px);
+  --footer-h: clamp(34px,4.5vh,46px);
+  --stripe-h: 4px;
+  --pad-x:    clamp(1.8rem,4.5vw,4.5rem);
+  --pad-y:    clamp(1.2rem,2.5vh,2.8rem);
+  --gap:      clamp(0.7rem,1.4vh,1.4rem);
+
+  --t-display: clamp(2rem,5.5vw,5rem);
+  --t-h1:      clamp(1.7rem,4vw,3.6rem);
+  --t-h2:      clamp(1.25rem,2.8vw,2.4rem);
+  --t-h3:      clamp(1rem,2vw,1.5rem);
+  --t-body:    clamp(0.82rem,1.35vw,1.02rem);
+  --t-small:   clamp(0.65rem,1vw,0.8rem);
+  --t-label:   clamp(0.55rem,0.85vw,0.7rem);
+}
+
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;height:100%;overflow-x:hidden;}
+body{font-family:var(--font);height:100%;overflow-x:hidden;background:var(--c-gris);}
+
+/* ============================================================
+   FIXED HEADER
+   ============================================================ */
+.pres-header{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:var(--header-h);
+  background:var(--c-marino);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--pad-x);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.h-logo{
+  font-size:clamp(0.8rem,1.4vw,1rem);font-weight:800;
+  color:#fff;letter-spacing:-0.02em;white-space:nowrap;flex-shrink:0;
+}
+.h-logo .plus{color:var(--c-teal);}
+.s-nav{display:flex;gap:clamp(0.25rem,0.8vw,0.7rem);align-items:center;}
+.sn{
+  font-size:var(--t-label);font-weight:600;letter-spacing:0.08em;
+  text-transform:uppercase;padding:0.28rem 0.75rem;border-radius:20px;
+  color:rgba(255,255,255,0.28);border:1px solid rgba(255,255,255,0.08);
+  white-space:nowrap;transition:all 0.3s;cursor:default;
+}
+.sn.active{color:#fff;}
+.sn[data-s="contexto"].active{border-color:var(--c-teal);background:rgba(25,146,139,0.22);}
+.sn[data-s="quienes"].active {border-color:var(--c-medio);background:rgba(44,104,144,0.25);}
+.sn[data-s="valija"].active  {border-color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.1);}
+.sn[data-s="impacto"].active {border-color:var(--c-teal);background:rgba(25,146,139,0.22);}
+.sn[data-s="cierre"].active  {border-color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.1);}
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+.progress-bar{
+  position:fixed;top:var(--header-h);left:0;z-index:201;
+  height:3px;width:0%;
+  background:linear-gradient(90deg,var(--c-teal),var(--c-medio));
+  transition:width 0.25s var(--ease);
+}
+
+/* ============================================================
+   FIXED FOOTER
+   ============================================================ */
+.pres-footer{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  height:var(--footer-h);
+  background:var(--c-gris);
+  border-top:1px solid rgba(0,0,0,0.08);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--pad-x);
+}
+.f-brand{font-size:var(--t-label);color:#bbb;letter-spacing:0.06em;}
+.f-counter{font-size:var(--t-label);font-weight:700;color:var(--c-marino);}
+.f-counter .cur{color:var(--c-teal);}
+
+/* ============================================================
+   SLIDE BASE
+   ============================================================ */
+.slide{
+  width:100vw;height:100vh;height:100dvh;
+  overflow:hidden;scroll-snap-align:start;
+  display:flex;flex-direction:column;
+  padding-top:var(--header-h);padding-bottom:var(--footer-h);
+  position:relative;background:var(--c-blanco);
+}
+/* Section color stripe — thin bar at top of each slide */
+.slide::after{
+  content:'';position:absolute;
+  top:var(--header-h);left:0;right:0;
+  height:var(--stripe-h);z-index:10;
+}
+.slide[data-s="portada"]::after {background:linear-gradient(90deg,var(--c-marino),var(--c-teal));}
+.slide[data-s="contexto"]::after{background:var(--c-teal);}
+.slide[data-s="quienes"]::after {background:var(--c-medio);}
+.slide[data-s="valija"]::after  {background:var(--c-marino);}
+.slide[data-s="impacto"]::after {background:var(--c-teal);}
+.slide[data-s="cierre"]::after  {background:var(--c-marino);}
+
+/* Slide body — sits below the stripe */
+.sb{flex:1;display:flex;overflow:hidden;margin-top:var(--stripe-h);}
+
+/* Standard content column */
+.cnt{
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding:var(--pad-y) var(--pad-x);gap:var(--gap);overflow:hidden;
+}
+
+/* Dark right accent panel */
+.pnl{
+  width:clamp(220px,30vw,380px);
+  background:var(--c-marino);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:var(--pad-y) clamp(1.5rem,3vw,3rem);
+  position:relative;overflow:hidden;flex-shrink:0;
+}
+.pnl .glow{
+  position:absolute;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(25,146,139,0.2) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.eyebrow{font-size:var(--t-label);font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--c-teal);}
+.eyebrow.azul{color:var(--c-medio);}
+.eyebrow.ghost{color:rgba(255,255,255,0.4);}
+h1{font-size:var(--t-h1);font-weight:800;line-height:0.95;letter-spacing:-0.03em;color:var(--c-marino);}
+h2{font-size:var(--t-h2);font-weight:800;line-height:1;letter-spacing:-0.02em;color:var(--c-marino);}
+h3{font-size:var(--t-h3);font-weight:700;color:var(--c-marino);}
+p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
+.accent{color:var(--c-teal);}
+.w{color:#fff!important;}
+.dim{color:rgba(255,255,255,0.55);}
+.divider{width:clamp(2rem,4vw,3.5rem);height:3px;background:var(--c-teal);border-radius:2px;flex-shrink:0;}
+
+/* ============================================================
+   ANIMATIONS — triggered by .visible class (added by IntersectionObserver)
+   ============================================================ */
+.rv{opacity:0;transform:translateY(20px);transition:opacity 0.6s var(--ease),transform 0.6s var(--ease);}
+.slide.visible .rv{opacity:1;transform:none;}
+.rv:nth-child(1){transition-delay:0.05s;}.rv:nth-child(2){transition-delay:0.15s;}
+.rv:nth-child(3){transition-delay:0.25s;}.rv:nth-child(4){transition-delay:0.35s;}
+.rv:nth-child(5){transition-delay:0.45s;}.rv:nth-child(6){transition-delay:0.55s;}
+.rv-sc{opacity:0;transform:scale(0.88);transition:opacity 0.65s var(--ease),transform 0.65s var(--ease);}
+.slide.visible .rv-sc{opacity:1;transform:none;}
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+
+/* Stat card — for data slides */
+.stat-card{
+  background:var(--c-gris);border:1px solid rgba(25,146,139,0.18);
+  border-radius:10px;padding:clamp(0.9rem,1.8vw,1.8rem);
+  display:flex;flex-direction:column;gap:0.4rem;
+}
+.stat-num{font-size:clamp(1.8rem,4.5vw,3.8rem);font-weight:800;color:var(--c-teal);letter-spacing:-0.04em;line-height:1;}
+.stat-lbl{font-size:var(--t-body);font-weight:500;color:var(--c-marino);line-height:1.3;}
+.stat-src{font-size:var(--t-label);color:#999;margin-top:0.2rem;}
+
+/* Tags / badges */
+.tag{display:inline-block;font-size:var(--t-label);font-weight:700;padding:0.28rem 0.75rem;border-radius:4px;letter-spacing:0.06em;text-transform:uppercase;}
+.tag-t{background:rgba(25,146,139,0.1);color:var(--c-teal);border:1px solid var(--c-teal);}
+.tag-a{background:rgba(44,104,144,0.1);color:var(--c-medio);border:1px solid var(--c-medio);}
+.tag-d{background:rgba(16,20,32,0.06);color:var(--c-marino);border:1px solid rgba(16,20,32,0.25);}
+.tag-w{background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.3);}
+
+/* Highlight box */
+.hl{background:rgba(25,146,139,0.06);border:1px solid rgba(25,146,139,0.2);border-left:4px solid var(--c-teal);border-radius:0 8px 8px 0;padding:clamp(0.8rem,1.5vw,1.4rem);}
+.hl.azul{border-left-color:var(--c-medio);background:rgba(44,104,144,0.05);border-color:rgba(44,104,144,0.2);}
+.hl.center{border-left:none;border-top:4px solid var(--c-teal);border-radius:8px;text-align:center;}
+
+/* Product card */
+.prod{background:var(--c-gris);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;position:relative;}
+.prod-img{background:#dde2ea;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:var(--t-label);color:#999;text-transform:uppercase;letter-spacing:0.08em;flex-shrink:0;overflow:hidden;flex-direction:column;gap:0.3rem;}
+.prod-img img{width:100%;height:100%;object-fit:cover;}
+.prod-body{padding:clamp(0.45rem,0.9vw,0.85rem);}
+.prod-name{font-size:var(--t-small);font-weight:700;color:var(--c-marino);}
+.prod-desc{font-size:clamp(0.52rem,0.82vw,0.68rem);color:var(--c-texto);line-height:1.4;margin-top:0.15rem;}
+.badge-fw{position:absolute;top:0.45rem;right:0.45rem;background:var(--c-teal);color:#fff;font-size:clamp(0.55rem,0.82vw,0.68rem);font-weight:700;padding:0.28rem 0.6rem;border-radius:4px;letter-spacing:0.04em;white-space:nowrap;box-shadow:0 2px 8px rgba(25,146,139,0.4);}
+
+/* Grids */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);}
+.col2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,3.5vw,4rem);align-items:center;}
+
+/* Person card */
+.person{display:flex;align-items:center;gap:clamp(1rem,2.5vw,2.5rem);}
+.photo{width:clamp(65px,11vw,130px);height:clamp(65px,11vw,130px);border-radius:50%;background:var(--c-medio);display:flex;align-items:center;justify-content:center;font-size:clamp(1.1rem,2.5vw,2rem);font-weight:800;color:#fff;flex-shrink:0;overflow:hidden;border:3px solid var(--c-teal);}
+.photo img{width:100%;height:100%;object-fit:cover;}
+.p-name{font-size:var(--t-h3);font-weight:800;color:var(--c-marino);}
+.p-role{font-size:var(--t-body);color:var(--c-texto);margin-top:0.25rem;line-height:1.4;}
+.pills{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.5rem;}
+.pill{font-size:var(--t-label);font-weight:600;padding:0.22rem 0.65rem;border-radius:20px;background:var(--c-gris);color:var(--c-marino);border:1px solid rgba(16,20,32,0.12);}
+
+/* Image placeholder */
+.img-ph{background:#dde2ea;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.35rem;color:#8a95a0;font-size:var(--t-label);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-align:center;}
+
+/* Video placeholder — shows overlay until video loads */
+.vid-ph{background:var(--c-marino);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.7rem;color:rgba(255,255,255,0.4);font-size:var(--t-label);letter-spacing:0.08em;text-transform:uppercase;position:relative;overflow:hidden;}
+.vid-ph video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;}
+.vid-ph .play-btn{width:clamp(40px,5vw,60px);height:clamp(40px,5vw,60px);border-radius:50%;border:2px solid var(--c-teal);display:flex;align-items:center;justify-content:center;color:var(--c-teal);font-size:1.3em;position:relative;z-index:1;background:rgba(16,20,32,0.6);}
+.vid-ph .vid-lbl{position:relative;z-index:1;}
+
+/* Flow diagram nodes */
+.flow{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;width:100%;}
+.fn{background:var(--c-teal);color:#fff;border-radius:8px;padding:clamp(0.45rem,1vw,0.9rem) clamp(0.6rem,1.2vw,1.2rem);text-align:center;flex-shrink:0;}
+.fn.hl{background:var(--c-marino);border:2px solid var(--c-teal);}
+.fn .fi{font-size:clamp(0.9em,1.5vw,1.2em);}
+.fn .fl{font-size:var(--t-label);font-weight:700;letter-spacing:0.05em;margin-top:0.15rem;white-space:nowrap;}
+.fn.muted{background:#dde2ea;color:var(--c-marino);}
+.fa{color:var(--c-medio);padding:0 clamp(0.3rem,0.6vw,0.6rem);font-size:clamp(0.8rem,1.3vw,1.1rem);flex-shrink:0;}
+
+/* Quote */
+.quote{font-size:clamp(0.95rem,2vw,1.55rem);font-weight:600;color:var(--c-marino);line-height:1.45;font-style:italic;position:relative;}
+.quote::before{content:'\201C';font-size:4em;color:var(--c-teal);opacity:0.18;position:absolute;top:-0.5em;left:-0.25em;line-height:1;font-style:normal;}
+
+/* QR */
+.qr-wrap{background:#fff;padding:0.85rem;border-radius:10px;display:inline-block;border:2px solid var(--c-teal);}
+.qr-note{font-size:var(--t-label);color:#aaa;text-align:center;margin-top:0.5rem;}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--font);font-size:var(--t-body);font-weight:700;padding:0.65em 1.4em;border-radius:6px;border:none;cursor:pointer;text-decoration:none;transition:transform 0.2s,opacity 0.2s;white-space:nowrap;}
+.btn:hover{transform:translateY(-2px);opacity:0.9;}
+.btn-t{background:var(--c-teal);color:#fff;}
+.btn-d{background:var(--c-marino);color:#fff;}
+.btn-wa{background:#25D366;color:#fff;}
+
+/* Criteria block */
+.crit{background:var(--c-gris);border-radius:10px;padding:clamp(1rem,2vw,1.8rem);display:flex;flex-direction:column;gap:0.5rem;border-top:3px solid var(--c-teal);}
+.crit-ttl{font-size:var(--t-h3);font-weight:800;color:var(--c-teal);}
+.crit-txt{font-size:var(--t-body);color:var(--c-texto);line-height:1.55;}
+
+/* Opportunity column */
+.opp{background:var(--c-gris);border-radius:10px;padding:clamp(1rem,2vw,1.8rem);display:flex;flex-direction:column;gap:0.5rem;}
+.opp-icon{font-size:1.4em;}
+.opp-ttl{font-size:var(--t-h3);font-weight:800;color:var(--c-marino);}
+.opp ul{list-style:none;display:flex;flex-direction:column;gap:0.3rem;}
+.opp li{font-size:var(--t-body);color:var(--c-texto);padding-left:1rem;position:relative;}
+.opp li::before{content:'·';position:absolute;left:0;color:var(--c-teal);font-weight:700;}
+
+/* Support grid */
+.supp{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);}
+.supp-item{background:var(--c-gris);border-radius:10px;padding:clamp(0.8rem,1.5vw,1.4rem);display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.4rem;}
+.supp-icon{font-size:clamp(1.3rem,2.5vw,2rem);}
+.supp-ttl{font-size:var(--t-small);font-weight:700;color:var(--c-marino);}
+.supp-txt{font-size:var(--t-label);color:var(--c-texto);line-height:1.4;}
+
+/* Dark slide */
+.dark{background:var(--c-marino);}
+.dark h1,.dark h2,.dark h3{color:#fff;}
+.dark p{color:rgba(255,255,255,0.6);}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-height:700px){:root{--pad-y:clamp(0.7rem,1.8vh,1.4rem);--gap:clamp(0.4rem,1vh,0.9rem);--t-h1:clamp(1.4rem,3.8vw,2.8rem);--t-h2:clamp(1.1rem,2.5vw,1.9rem);}}
+@media(max-height:600px){:root{--pad-y:0.6rem;--t-h1:clamp(1.2rem,3.5vw,2.2rem);}.supp{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:900px){.g4{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:repeat(2,1fr);}.supp{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.pnl{display:none;}.col2,.g2{grid-template-columns:1fr;}.s-nav{display:none;}}
+@media(max-width:600px){.g3,.g4{grid-template-columns:1fr;}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.2s!important;}html{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     FIXED UI SHELL
+     ============================================================ -->
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="pres-header">
+  <div class="h-logo">dis<span class="plus">+</span>capacidad</div>
+  <nav class="s-nav">
+    <span class="sn" data-s="contexto">Contexto</span>
+    <span class="sn" data-s="quienes">Quiénes somos</span>
+    <span class="sn" data-s="valija">La valija</span>
+    <span class="sn" data-s="impacto">Impacto</span>
+    <span class="sn" data-s="cierre">Cierre</span>
+  </nav>
+</header>
+
+<footer class="pres-footer">
+  <span class="f-brand">dis+capacidad · Equipar para Equipar</span>
+  <span class="f-counter"><span class="cur" id="curSlide">1</span>&thinsp;/&thinsp;<span id="totSlide">24</span></span>
+</footer>
+
+<!-- ============================================================
+     SLIDE 0 — PORTADA
+     ============================================================ -->
+<section class="slide dark" data-s="portada" data-n="1">
+  <div class="sb">
+    <div class="cnt" style="border-right:1px solid rgba(255,255,255,0.07);">
+      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;">
+        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="max-height:min(8vh,70px);object-fit:contain;display:block;">
+      </div>
+      <h1 class="rv w" style="margin-top:var(--gap);">Equipar<br>para<br><span class="accent">Equipar</span></h1>
+      <p class="rv dim" style="max-width:36ch;">Tecnología Asistiva para instituciones de rehabilitación de la Provincia de Córdoba</p>
+      <div class="rv" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.3rem;">
+        <span class="tag tag-w">Gobierno de Córdoba</span>
+        <span class="tag tag-w">Marzo 2026</span>
+      </div>
+    </div>
+    <div class="pnl" style="width:clamp(240px,35vw,420px);">
+      <div class="glow"></div>
+      <div class="rv-sc" style="text-align:center;position:relative;z-index:1;">
+        <div style="font-size:var(--t-display);font-weight:800;color:var(--c-teal);letter-spacing:-0.05em;line-height:1;">20</div>
+        <div style="font-size:var(--t-h3);font-weight:700;color:#fff;margin-top:0.4rem;">instituciones</div>
+        <div style="font-size:var(--t-body);color:rgba(255,255,255,0.35);margin-top:0.3rem;">equipadas hoy</div>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: Slide de bienvenida. Proyectar mientras la gente entra. No leer — bienvenida oral de 30 segundos. -->
+</section>
+
+<!-- ============================================================
+     BLOQUE 1 — CONTEXTO
+     ============================================================ -->
+<section class="slide" data-s="contexto" data-n="2">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv">El contexto</span>
+      <h2 class="rv">El sector de la<br>discapacidad hoy</h2>
+      <div class="divider rv"></div>
+      <p class="rv" style="max-width:52ch;">Cambios en prestaciones. Revisiones en sistemas de financiamiento. Incertidumbre para instituciones y familias.</p>
+      <p class="rv" style="max-width:52ch;">En ese marco, el Gobierno de Córdoba eligió actuar.</p>
+    </div>
+    <div class="pnl">
+      <div class="glow"></div>
+      <div class="img-ph rv-sc" style="width:clamp(130px,20vw,210px);height:clamp(130px,20vw,210px);border-radius:50%;background:rgba(25,146,139,0.12);border:2px solid rgba(25,146,139,0.25);position:relative;z-index:1;">
+        <span style="font-size:2em;opacity:0.4;">🗺️</span>
+        <span>Córdoba</span>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: Describir hechos sin etiquetas políticas, ~2 minutos. Dejar que el público interprete. -->
+</section>
+
+<section class="slide" data-s="contexto" data-n="3">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv">La escala del problema</span>
+      <h2 class="rv">¿De qué magnitud<br>hablamos?</h2>
+      <div class="g3 rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div class="stat-card">
+          <div class="stat-num">2.500M</div>
+          <div class="stat-lbl">personas necesitan tecnología asistiva hoy</div>
+          <div class="stat-src">OMS–UNICEF 2022</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">1 de 10</div>
+          <div class="stat-lbl">argentinos tiene algún tipo de discapacidad</div>
+          <div class="stat-src">INDEC 2018 — último dato nacional</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3.500M</div>
+          <div class="stat-lbl">personas la necesitarán en 2050</div>
+          <div class="stat-src">OMS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: Aclarar que el dato de INDEC es de 2018, el más reciente disponible a nivel nacional. -->
+</section>
+
+<section class="slide" data-s="contexto" data-n="4">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv">Definición — OMS 2016</span>
+      <h2 class="rv">¿Qué es tecnología asistiva?</h2>
+      <div class="col2 rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div class="hl">
+          <div style="font-size:var(--t-label);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--c-teal);margin-bottom:0.5rem;">Producto de apoyo</div>
+          <p>Dispositivo o equipo que mantiene o mejora la funcionalidad e independencia del usuario.</p>
+        </div>
+        <div class="hl azul">
+          <div style="font-size:var(--t-label);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--c-medio);margin-bottom:0.5rem;">Servicio</div>
+          <p>Evaluación, indicación, configuración y seguimiento realizado por un profesional capacitado.</p>
+        </div>
+      </div>
+      <div class="rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.6rem;">La cadena de acceso</div>
+        <div class="flow">
+          <div class="fn"><div class="fl">Gobierno</div></div><div class="fa">→</div>
+          <div class="fn"><div class="fl">Obras sociales</div></div><div class="fa">→</div>
+          <div class="fn"><div class="fl">Instituciones</div></div><div class="fa">→</div>
+          <div class="fn hl"><div class="fl">dis+cap.</div></div><div class="fa">→</div>
+          <div class="fn"><div class="fl">Profesionales</div></div><div class="fa">→</div>
+          <div class="fn"><div class="fl">Pacientes</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: Cuando falla un eslabón, el dispositivo más caro queda en un cajón. -->
+</section>
+
+<section class="slide" data-s="contexto" data-n="5">
+  <div class="sb">
+    <div class="cnt" style="align-items:center;">
+      <span class="eyebrow rv">Lo que hoy empieza</span>
+      <h2 class="rv" style="text-align:center;">El circuito</h2>
+      <div class="divider rv" style="align-self:center;"></div>
+      <div class="flow rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div class="fn"><div class="fi">🧳</div><div class="fl">Valija EpE</div></div><div class="fa">→</div>
+        <div class="fn"><div class="fi">🔍</div><div class="fl">Evaluación</div></div><div class="fa">→</div>
+        <div class="fn"><div class="fi">✅</div><div class="fl">Indicación</div></div><div class="fa">→</div>
+        <div class="fn"><div class="fi">🏛️</div><div class="fl">AcceDer</div></div><div class="fa">→</div>
+        <div class="fn hl"><div class="fi">🙌</div><div class="fl">Acceso</div></div>
+      </div>
+      <p class="rv" style="text-align:center;color:var(--c-medio);font-weight:600;margin-top:var(--gap);">La institución se diferencia — el paciente accede.</p>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: Este diagrama vuelve en el Bloque 5 con todo el peso de la presentación encima. Es una promesa que se cumple. -->
+</section>
+
+<!-- ============================================================
+     BLOQUE 2 — QUIÉNES SOMOS
+     ============================================================ -->
+<section class="slide" data-s="quienes" data-n="6">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow azul rv">Quiénes somos</span>
+      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;border:1px solid rgba(0,0,0,0.06);">
+        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="max-height:min(8vh,70px);object-fit:contain;display:block;">
+      </div>
+      <p class="rv" style="font-size:var(--t-h3);font-weight:600;color:var(--c-texto);max-width:44ch;line-height:1.4;">Diseño propio. Conocimiento clínico. Hecho en Córdoba.</p>
+      <div class="divider rv"></div>
+      <div class="rv" style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <span class="tag tag-a">Plan Sarmiento · CABA · 2019</span>
+        <span class="tag tag-a">Plan Ceibal · Uruguay · 2019–2021</span>
+      </div>
+      <p class="rv" style="color:var(--c-medio);font-weight:600;">Argentina · Uruguay · Chile · Brasil</p>
+    </div>
+    <div class="pnl">
+      <div class="glow"></div>
+      <div class="rv-sc" style="position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;gap:0.8rem;">
+        <div style="font-size:var(--t-display);font-weight:800;color:var(--c-teal);line-height:1;">+10</div>
+        <div style="color:rgba(255,255,255,0.5);font-size:var(--t-body);">años de trayectoria</div>
+        <div style="width:2rem;height:2px;background:var(--c-teal);margin:0.3rem auto;"></div>
+        <div style="color:rgba(255,255,255,0.25);font-size:var(--t-label);letter-spacing:0.12em;text-transform:uppercase;">Factura 0001<br>NeuroAbility</div>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: Contar el origen desde la tensión ingeniero/terapeuta. No leer la slide. -->
+</section>
+
+<section class="slide" data-s="quienes" data-n="7">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow azul rv">Equipar para Equipar</span>
+      <h2 class="rv">No solo el usuario final</h2>
+      <div class="divider rv"></div>
+      <div class="col2 rv">
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="font-size:var(--t-label);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#bbb;">Antes</div>
+          <div class="flow" style="justify-content:flex-start;">
+            <div class="fn muted"><div class="fl">Producto</div></div><div class="fa">→</div>
+            <div class="fn muted"><div class="fl">Usuario final</div></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="font-size:var(--t-label);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--c-teal);">Ahora</div>
+          <div class="flow" style="justify-content:flex-start;">
+            <div class="fn"><div class="fl">Institución</div></div><div class="fa">→</div>
+            <div class="fn"><div class="fl">Profesional</div></div><div class="fa">→</div>
+            <div class="fn"><div class="fl">Paciente</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="hl rv">
+        <p style="font-size:var(--t-h3);font-weight:700;color:var(--c-marino);">No es un kit de productos.<br>Es una <span class="accent">metodología de evaluación</span>.</p>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: EpE nació de preguntarse qué necesita el profesional, no solo el paciente. -->
+</section>
+
+<section class="slide" data-s="quienes" data-n="8">
+  <div class="sb">
+    <div class="cnt" style="justify-content:center;gap:clamp(1.2rem,2.5vh,2.5rem);">
+      <span class="eyebrow azul rv">El equipo</span>
+      <div class="person rv">
+        <div class="photo"><img src="assets/img/belen_hidalgo.jpg" alt="Belén Hidalgo"></div>
+        <div>
+          <div class="p-name">Belén Hidalgo</div>
+          <div class="p-role">Ingeniera Biomédica · Evaluadora en Tecnología Asistiva</div>
+          <div class="pills"><span class="pill">NeuroAbility</span><span class="pill">Córdoba</span><span class="pill">+10 años</span></div>
+        </div>
+      </div>
+      <div class="rv" style="height:1px;background:rgba(0,0,0,0.07);"></div>
+      <div class="person rv">
+        <div class="photo" style="border-color:var(--c-medio);"><img src="assets/img/gonzalo_nanzer.jpg" alt="Gonzalo Nanzer"></div>
+        <div>
+          <div class="p-name">Gonzalo Nanzer</div>
+          <div class="p-role">Ingeniero Biomédico · Desarrollador de Tecnología Asistiva</div>
+          <div class="pills"><span class="pill">dis+capacidad</span><span class="pill">Córdoba</span><span class="pill">+10 años</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE para Belén: esta es tu slide. Tomá la palabra y presentate en tus propias palabras. -->
+</section>
+
+<!-- ============================================================
+     BLOQUE 3 — LA VALIJA
+     ============================================================ -->
+<section class="slide" data-s="valija" data-n="9">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">La valija</span>
+      <h2 class="rv">¿Por qué estos dispositivos?</h2>
+      <div class="g3 rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div class="crit">
+          <div class="crit-ttl">Versátil</div>
+          <div class="crit-txt">Sirve para más de un usuario y más de una situación clínica.</div>
+        </div>
+        <div class="crit" style="border-top-color:var(--c-medio);">
+          <div class="crit-ttl" style="color:var(--c-medio);">Configurable</div>
+          <div class="crit-txt">El profesional puede adaptarlo sin depender de soporte externo.</div>
+        </div>
+        <div class="crit" style="border-top-color:var(--c-marino);">
+          <div class="crit-ttl" style="color:var(--c-marino);">Punto de partida</div>
+          <div class="crit-txt">Herramienta de validación, no solución definitiva.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: Lo que sigue no es un catálogo — es una metodología. -->
+</section>
+
+<section class="slide" data-s="valija" data-n="10">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">Valija · 1 de 4</span>
+      <h2 class="rv">Posicionamiento</h2>
+      <div class="g3 rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div class="prod">
+          <div class="prod-img"><img src="assets/img/brazo_articulado.jpg" alt="Brazo articulado"></div>
+          <div class="prod-body"><div class="prod-name">Brazo articulado</div><div class="prod-desc">Soporte universal para tablet y dispositivos. Regulable en altura y ángulo.</div></div>
+        </div>
+        <div class="prod">
+          <div class="prod-img"><img src="assets/img/atril.jpg" alt="Atril regulable"></div>
+          <div class="prod-body"><div class="prod-name">Atril regulable para tablet</div><div class="prod-desc">Posicionamiento de pantalla en mesa o cama. Ángulo ajustable.</div></div>
+        </div>
+        <div class="prod">
+          <div class="prod-img"><img src="assets/img/soporte_celular.jpg" alt="Soporte para celulares"></div>
+          <div class="prod-body"><div class="prod-name">Soporte para celulares</div><div class="prod-desc">Fijación flexible para diferentes tamaños y posiciones.</div></div>
+        </div>
+      </div>
+      <div class="hl rv">
+        <p style="font-weight:600;">El posicionamiento no es accesorio — es <span class="accent">la mitad de la intervención</span>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-s="valija" data-n="11">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">Valija · 2 de 4</span>
+      <h2 class="rv">Acceso directo a TICs</h2>
+      <div class="g4 rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div class="prod">
+          <div class="badge-fw">✦ Firmware actualizado</div>
+          <div class="prod-img"><img src="assets/img/dismouse.jpg" alt="disMouse 2.3"></div>
+          <div class="prod-body"><div class="prod-name">disMouse 2.3</div><div class="prod-desc">Mouse adaptado configurable desde el navegador.</div></div>
+        </div>
+        <div class="prod">
+          <div class="badge-fw">✦ Firmware actualizado</div>
+          <div class="prod-img"><img src="assets/img/disjoystick.jpg" alt="disJoystick 4 botones"></div>
+          <div class="prod-body"><div class="prod-name">disJoystick 4 botones</div><div class="prod-desc">4 direcciones + acciones totalmente configurables.</div></div>
+        </div>
+        <div class="prod">
+          <div class="prod-img"><img src="assets/img/teclado_sobreteclado.jpg" alt="Teclado con sobreteclado"></div>
+          <div class="prod-body"><div class="prod-name">Teclado con sobreteclado</div><div class="prod-desc">Reduce área activa, evita pulsaciones involuntarias.</div></div>
+        </div>
+        <div class="prod">
+          <div class="prod-img"><img src="assets/img/adaptadores_otg.jpg" alt="Adaptadores USB OTG"></div>
+          <div class="prod-body"><div class="prod-name">Adaptadores USB OTG ×3</div><div class="prod-desc">Conectan dispositivos USB a cualquier Android o tablet.</div></div>
+        </div>
+      </div>
+      <p class="rv" style="color:var(--c-medio);font-weight:600;">Para usuarios con movimiento funcional que necesitan una interfaz adaptada.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-s="valija" data-n="12">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">Valija · 3 de 4</span>
+      <h2 class="rv">Acceso indirecto a TICs</h2>
+      <div class="g3 rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div class="prod">
+          <div class="prod-img"><img src="assets/img/pulsador_usb_cable.jpg" alt="Pulsadores USB con cable"></div>
+          <div class="prod-body"><div class="prod-name">Pulsadores USB con cable</div><div class="prod-desc">Conexión directa, sin configuración. Plug &amp; play.</div></div>
+        </div>
+        <div class="prod">
+          <div class="prod-img"><img src="assets/img/pulsador_inalambrico.png" alt="Pulsadores USB inalámbricos"></div>
+          <div class="prod-body"><div class="prod-name">Pulsadores USB inalámbricos</div><div class="prod-desc">Receptor USB, rango extendido. Ideal para cama o silla.</div></div>
+        </div>
+        <div class="prod">
+          <div class="prod-img"><img src="assets/img/pulsador_plug.png" alt="Pulsadores PLUG"></div>
+          <div class="prod-body"><div class="prod-name">Pulsadores PLUG ×3</div><div class="prod-desc">Jack 3.5 mm universal. Compatibles con la mayoría de los comunicadores.</div></div>
+        </div>
+      </div>
+      <div class="hl rv">
+        <p><strong style="color:var(--c-marino);">Punto de acceso:</strong> cualquier movimiento voluntario y repetible, por mínimo que sea, puede convertirse en una forma de interactuar con un dispositivo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-s="valija" data-n="13">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">Valija · 4 de 4</span>
+      <h2 class="rv">Comunicación Aumentativa y Alternativa</h2>
+      <div class="col2 rv" style="margin-top:calc(var(--gap)*0.5);align-items:stretch;">
+        <div class="prod-img" style="border-radius:10px;font-size:var(--t-h3);flex-direction:column;gap:0.5rem;min-height:clamp(100px,18vh,180px);">
+          <img src="assets/img/discom.jpg" alt="disCom lvls+" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--gap);">
+          <div class="hl">
+            <div style="font-size:var(--t-label);font-weight:700;color:var(--c-teal);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;">Modo por Niveles</div>
+            <p>Hasta 9 mensajes en 3 niveles. Ideal para primeros pasos de causa-efecto.</p>
+          </div>
+          <div class="hl azul">
+            <div style="font-size:var(--t-label);font-weight:700;color:var(--c-medio);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;">Modo Secuencial</div>
+            <p>Hasta 90 segundos totales de grabación. Para secuencias comunicativas.</p>
+          </div>
+        </div>
+      </div>
+      <p class="rv" style="color:var(--c-medio);font-weight:600;">Desde primeros pasos de causa-efecto hasta secuencias comunicativas.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide dark" data-s="valija" data-n="14">
+  <div class="sb" style="background:var(--c-marino);">
+    <div class="cnt" style="align-items:center;text-align:center;">
+      <span class="eyebrow rv ghost">Una novedad que cambia todo</span>
+      <h2 class="rv w" style="font-size:var(--t-h1);">Firmware actualizado</h2>
+      <div class="rv" style="display:flex;gap:0.5rem;justify-content:center;">
+        <span class="tag tag-w">disMouse 2.3</span>
+        <span class="tag tag-w">disJoystick 4 botones</span>
+      </div>
+      <p class="rv dim" style="max-width:44ch;">Ahora compatibles con el configurador online. Personalización desde el navegador, sin instalar nada.</p>
+      <div class="rv">
+        <code style="font-size:var(--t-body);color:var(--c-teal);background:rgba(25,146,139,0.12);padding:0.4rem 1rem;border-radius:6px;letter-spacing:0.04em;">dismascapacidad.netlify.app</code>
+      </div>
+      <div class="rv" style="margin-top:calc(var(--gap)*0.5);">
+        <a href="https://dismascapacidad.netlify.app" target="_blank" class="btn btn-t">Abrir configurador →</a>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: Demostrar el actualizador en vivo. Mencionar el encuentro de seguimiento como gancho. -->
+</section>
+
+<section class="slide" data-s="valija" data-n="15">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">Soporte incluido</span>
+      <h2 class="rv">Todo sigue disponible<br>cuando lo necesiten</h2>
+      <div class="supp rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div class="supp-item"><div class="supp-icon">📄</div><div class="supp-ttl">Manuales digitales</div><div class="supp-txt">Desde el QR de esta presentación</div></div>
+        <div class="supp-item"><div class="supp-icon">⚙️</div><div class="supp-ttl">Configurador online</div><div class="supp-txt">dismascapacidad.netlify.app</div></div>
+        <div class="supp-item"><div class="supp-icon">⬇️</div><div class="supp-ttl">Actualizador de firmware</div><div class="supp-txt">Disponible en la tienda</div></div>
+        <div class="supp-item"><div class="supp-icon">💬</div><div class="supp-ttl">Contacto directo</div><div class="supp-txt">WhatsApp + email</div></div>
+      </div>
+    </div>
+    <div class="pnl" style="align-items:center;justify-content:center;gap:0.7rem;">
+      <div class="glow"></div>
+      <div style="position:relative;z-index:1;text-align:center;">
+        <div class="qr-wrap" id="qr37"></div>
+        <div class="qr-note" style="color:rgba(255,255,255,0.3);">Escaneá para acceder</div>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: "No necesitan tomar notas. Todo está en ese QR." -->
+</section>
+
+<!-- ============================================================
+     BLOQUE 4 — IMPACTO
+     ============================================================ -->
+<section class="slide" data-s="impacto" data-n="16">
+  <div class="sb">
+    <div class="cnt" style="align-items:center;text-align:center;justify-content:center;gap:clamp(1rem,2.5vh,2.5rem);">
+      <span class="eyebrow rv">El impacto en acción</span>
+      <div class="photo rv" style="width:clamp(90px,16vw,180px);height:clamp(90px,16vw,180px);margin:0 auto;font-size:clamp(1.5rem,3vw,2.5rem);">
+        <img src="assets/img/belen_hidalgo.jpg" alt="Belén Hidalgo">
+      </div>
+      <h2 class="rv">Sesiones reales.<br>Pacientes reales.<br>Resultados concretos.</h2>
+      <p class="rv" style="color:var(--c-medio);font-weight:600;max-width:38ch;">Evidencia clínica — no marketing.</p>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE para Belén: establecer que lo que sigue es evidencia clínica, no marketing. -->
+</section>
+
+<section class="slide" data-s="impacto" data-n="17">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv">Caso clínico 1</span>
+      <div class="col2 rv" style="flex:1;align-items:stretch;margin-top:calc(var(--gap)*0.5);">
+        <div style="display:flex;flex-direction:column;gap:var(--gap);">
+          <div style="font-size:var(--t-h3);font-weight:800;color:var(--c-marino);">Parálisis cerebral · 8 años</div>
+          <div>
+            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Dispositivo utilizado</div>
+            <span class="tag tag-t">disMouse 2.3</span>
+          </div>
+          <div>
+            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Desafío funcional</div>
+            <p>[Descripción del desafío funcional — completar antes del evento]</p>
+          </div>
+        </div>
+        <div class="vid-ph" style="min-height:clamp(140px,25vh,260px);">
+          <video src="assets/video/caso_1.mp4" controls preload="metadata"></video>
+          <div class="play-btn">▶</div>
+          <div class="vid-lbl">caso_1.mp4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE para Belén: contar contexto antes de reproducir. Señalar qué cambió después del video. -->
+</section>
+
+<section class="slide" data-s="impacto" data-n="18">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv">Caso clínico 2</span>
+      <div class="col2 rv" style="flex:1;align-items:stretch;margin-top:calc(var(--gap)*0.5);">
+        <div style="display:flex;flex-direction:column;gap:var(--gap);">
+          <div style="font-size:var(--t-h3);font-weight:800;color:var(--c-marino);">[Diagnóstico · Edad]</div>
+          <div>
+            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Dispositivo utilizado</div>
+            <span class="tag tag-t">[Nombre del dispositivo]</span>
+          </div>
+          <div>
+            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Desafío funcional</div>
+            <p>[Descripción del desafío funcional — completar antes del evento]</p>
+          </div>
+        </div>
+        <div class="vid-ph" style="min-height:clamp(140px,25vh,260px);">
+          <video src="assets/video/caso_2.mp4" controls preload="metadata"></video>
+          <div class="play-btn">▶</div>
+          <div class="vid-lbl">caso_2.mp4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-s="impacto" data-n="19">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv">Caso clínico 3</span>
+      <div class="col2 rv" style="flex:1;align-items:stretch;margin-top:calc(var(--gap)*0.5);">
+        <div style="display:flex;flex-direction:column;gap:var(--gap);">
+          <div style="font-size:var(--t-h3);font-weight:800;color:var(--c-marino);">[Diagnóstico · Edad]</div>
+          <div>
+            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Dispositivo utilizado</div>
+            <span class="tag tag-t">[Nombre del dispositivo]</span>
+          </div>
+          <div>
+            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Desafío funcional</div>
+            <p>[Descripción del desafío funcional — completar antes del evento]</p>
+          </div>
+        </div>
+        <div class="vid-ph" style="min-height:clamp(140px,25vh,260px);">
+          <video src="assets/video/caso_3.mp4" controls preload="metadata"></video>
+          <div class="play-btn">▶</div>
+          <div class="vid-lbl">caso_3.mp4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-s="impacto" data-n="20" style="background:rgba(25,146,139,0.04);">
+  <div class="sb">
+    <div class="cnt" style="align-items:center;text-align:center;justify-content:center;gap:clamp(1.2rem,2.5vh,2.5rem);">
+      <div class="photo rv" style="width:clamp(80px,13vw,150px);height:clamp(80px,13vw,150px);margin:0 auto;font-size:clamp(1.3rem,2.5vw,2.2rem);">
+        <img src="assets/img/belen_hidalgo.jpg" alt="Belén Hidalgo">
+      </div>
+      <div class="quote rv" style="max-width:52ch;padding-left:1.5rem;">[Tu frase sobre lo que cambia cuando la institución tiene la valija disponible]</div>
+      <p class="rv" style="font-size:var(--t-small);color:#aaa;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Belén Hidalgo · Ingeniera Biomédica</p>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE para Belén: hablar directamente a los profesionales de la sala. -->
+</section>
+
+<!-- ============================================================
+     BLOQUE 5 — CIERRE
+     ============================================================ -->
+<section class="slide" data-s="cierre" data-n="21">
+  <div class="sb">
+    <div class="cnt" style="align-items:center;">
+      <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">La oportunidad</span>
+      <h2 class="rv" style="text-align:center;">El circuito completo</h2>
+      <div class="divider rv" style="align-self:center;"></div>
+      <div class="flow rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div class="fn"><div class="fi">🧳</div><div class="fl">Valija EpE</div></div><div class="fa">→</div>
+        <div class="fn"><div class="fi">🔍</div><div class="fl">Evaluación</div></div><div class="fa">→</div>
+        <div class="fn"><div class="fi">✅</div><div class="fl">Indicación</div></div><div class="fa">→</div>
+        <div class="fn"><div class="fi">🏛️</div><div class="fl">AcceDer</div></div><div class="fa">→</div>
+        <div class="fn hl"><div class="fi">🙌</div><div class="fl">Acceso</div></div>
+      </div>
+      <div class="hl center rv" style="margin-top:var(--gap);">
+        <p style="font-size:var(--t-h3);font-weight:700;color:var(--c-marino);">No es un conjunto de productos. Es un <span class="accent">sistema</span>.</p>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: "Este diagrama ya lo vieron. Ahora tiene todo lo que mostramos encima." -->
+</section>
+
+<section class="slide" data-s="cierre" data-n="22">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">¿Qué cambia a partir de hoy?</span>
+      <h2 class="rv">La oportunidad</h2>
+      <div class="g3 rv" style="margin-top:calc(var(--gap)*0.5);">
+        <div class="opp" style="border-top:3px solid var(--c-teal);">
+          <div class="opp-icon">🏥</div><div class="opp-ttl">Para instituciones</div>
+          <ul><li>Diferenciación real</li><li>Evaluación de precisión</li><li>Canal de financiamiento</li></ul>
+        </div>
+        <div class="opp" style="border-top:3px solid var(--c-medio);">
+          <div class="opp-icon">👩‍⚕️</div><div class="opp-ttl">Para profesionales</div>
+          <ul><li>Red de referentes</li><li>Encuentro de actualización</li><li>Acompañamiento técnico y clínico</li></ul>
+        </div>
+        <div class="opp" style="border-top:3px solid var(--c-marino);">
+          <div class="opp-icon">🏛️</div><div class="opp-ttl">Para el gobierno</div>
+          <ul><li>Sistema escalable</li><li>Nodos provinciales</li><li>Crecimiento acompañado</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-s="cierre" data-n="23">
+  <div class="sb">
+    <div class="cnt" style="justify-content:center;gap:clamp(1rem,2vh,2rem);">
+      <h2 class="rv">¿Qué hacemos ahora?</h2>
+      <div class="col2 rv" style="align-items:start;gap:clamp(2rem,5vw,6rem);">
+        <div style="display:flex;flex-direction:column;gap:var(--gap);">
+          <div class="hl" style="display:flex;align-items:flex-start;gap:0.8rem;">
+            <span style="font-size:1.5em;font-weight:800;color:var(--c-teal);flex-shrink:0;line-height:1.2;">1</span>
+            <p>Escaneá el QR → presentación completa, manuales y configurador</p>
+          </div>
+          <div class="hl" style="display:flex;align-items:flex-start;gap:0.8rem;">
+            <span style="font-size:1.5em;font-weight:800;color:var(--c-teal);flex-shrink:0;line-height:1.2;">2</span>
+            <div style="display:flex;flex-direction:column;gap:0.4rem;">
+              <p>Anotate al encuentro de actualización</p>
+              <a href="inscripcion.html" target="_blank"
+                 style="display:inline-flex;align-items:center;gap:0.4rem;background:var(--c-teal);color:#fff;font-weight:700;font-size:clamp(0.75rem,1.2vw,0.95rem);padding:0.45em 1em;border-radius:6px;text-decoration:none;width:fit-content;">
+                ✏️ Anotarme al encuentro →
+              </a>
+            </div>
+          </div>
+          <div class="hl" style="display:flex;align-items:flex-start;gap:0.8rem;">
+            <span style="font-size:1.5em;font-weight:800;color:var(--c-teal);flex-shrink:0;line-height:1.2;">3</span>
+            <p>Hablenos hoy → estamos acá</p>
+          </div>
+          <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.3rem;">
+            <a href="https://wa.me/5493513466348" target="_blank" class="btn btn-wa">💬 Escribinos</a>
+            <a href="https://dismascapacidad.com.ar" target="_blank" class="btn btn-d">🛒 Tienda</a>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
+          <div class="qr-wrap" id="qr53"></div>
+          <div class="qr-note">Escaneá con tu celular</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: La slide más simple. Dejar proyectada durante preguntas. -->
+</section>
+
+<section class="slide dark" data-s="cierre" data-n="24">
+  <div class="sb" style="background:var(--c-marino);">
+    <div class="cnt" style="align-items:center;text-align:center;justify-content:center;gap:var(--gap);">
+      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;">
+        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="max-height:min(8vh,70px);object-fit:contain;display:block;">
+      </div>
+      <div class="divider rv" style="align-self:center;"></div>
+      <div class="quote rv" style="max-width:52ch;padding-left:1.5rem;color:rgba(255,255,255,0.82);">Dismascapacidad existe porque creemos que la tecnología asistiva funciona cuando llega bien acompañada.</div>
+      <p class="rv" style="font-size:var(--t-small);color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;">Gonzalo Nanzer · dis+capacidad</p>
+      <div class="rv" style="width:2rem;height:1px;background:rgba(255,255,255,0.1);margin:0.3rem auto;"></div>
+      <p class="rv" style="font-size:var(--t-h3);font-weight:500;color:rgba(255,255,255,0.45);font-style:italic;max-width:44ch;">[Frase de cierre de Belén]</p>
+      <div class="rv" style="margin-top:var(--gap);display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;font-size:var(--t-small);color:rgba(255,255,255,0.2);">
+        <span>dismascapacidad.com.ar</span>
+        <span>wa.me/5493513466348</span>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: La última slide. Dejarla proyectada. -->
+</section>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+(function(){
+  /* --- Config --- */
+  const WA   = '5493513466348';
+  const SHOP = 'https://dismascapacidad.com.ar';
+
+  /* --- Elements --- */
+  const slides   = Array.from(document.querySelectorAll('.slide'));
+  const total    = slides.length;
+  const curEl    = document.getElementById('curSlide');
+  const totEl    = document.getElementById('totSlide');
+  const bar      = document.getElementById('progressBar');
+  const navItems = document.querySelectorAll('.sn');
+  let   current  = 0;
+
+  totEl.textContent = total;
+
+  /* --- IntersectionObserver: add .visible → triggers CSS animations --- */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        const idx = slides.indexOf(e.target);
+        if (idx !== -1) updateUI(idx);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => io.observe(s));
+
+  /* --- Update counter, progress bar, nav pills --- */
+  function updateUI(idx) {
+    current = idx;
+    curEl.textContent = idx + 1;
+    bar.style.width = (idx / Math.max(total - 1, 1) * 100) + '%';
+    const sec = slides[idx].dataset.s;
+    navItems.forEach(n => n.classList.toggle('active', n.dataset.s === sec));
+  }
+
+  /* --- Navigate to slide --- */
+  function goTo(idx) {
+    idx = Math.max(0, Math.min(total - 1, idx));
+    slides[idx].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* --- Keyboard --- */
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); goTo(current + 1); }
+    if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key))          { e.preventDefault(); goTo(current - 1); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End')  { e.preventDefault(); goTo(total - 1); }
+  });
+
+  /* --- Touch / swipe --- */
+  let ty = null;
+  document.addEventListener('touchstart', e => { ty = e.touches[0].clientY; }, {passive:true});
+  document.addEventListener('touchend',   e => {
+    if (ty === null) return;
+    const d = ty - e.changedTouches[0].clientY;
+    if (Math.abs(d) > 40) goTo(current + (d > 0 ? 1 : -1));
+    ty = null;
+  }, {passive:true});
+
+  /* --- Mouse wheel (throttled) --- */
+  let wLock = false;
+  document.addEventListener('wheel', e => {
+    if (wLock) return;
+    wLock = true;
+    goTo(current + (e.deltaY > 0 ? 1 : -1));
+    setTimeout(() => { wLock = false; }, 900);
+  }, {passive:true});
+
+  /* --- Video overlays: hide play button when video has a source --- */
+  document.querySelectorAll('.vid-ph').forEach(ph => {
+    const v = ph.querySelector('video');
+    if (!v) return;
+    v.addEventListener('loadedmetadata', () => {
+      const btn = ph.querySelector('.play-btn');
+      const lbl = ph.querySelector('.vid-lbl');
+      if (btn) btn.style.display = 'none';
+      if (lbl) lbl.style.display = 'none';
+    });
+  });
+
+})();
+
+/* --- QR Code generation --- */
+(function(){
+  const isLocal = ['localhost','127.0.0.1',''].includes(location.hostname) || location.protocol === 'file:';
+  const url     = window.location.href;
+
+  function makeQR(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (isLocal) {
+      el.innerHTML = '<div style="width:200px;height:200px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:0.65rem;color:#aaa;padding:1rem;line-height:1.6;">QR disponible<br>en producción</div>';
+      return;
+    }
+    new QRCode(el, { text: url, width: 200, height: 200, colorDark: '#101420', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+  }
+
+  makeQR('qr37');
+  makeQR('qr53');
+})();
+</script>
+</body>
+</html>

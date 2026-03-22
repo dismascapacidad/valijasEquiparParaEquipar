@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encuentro de actualización · dis+capacidad</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       BRAND VARIABLES — mismos que index.html
+       ============================================================ */
+    :root {
+      --azul-marino: #101420;
+      --azul-medio:  #2C6890;
+      --teal:        #19928B;
+      --blanco:      #FFFFFF;
+      --gris-claro:  #F4F6F9;
+      --gris-texto:  #444444;
+      --teal-suave:  #E8F6F7;
+
+      --font-display: 'Montserrat', sans-serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--gris-claro);
+      color: var(--gris-texto);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--azul-marino);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo-text {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: white;
+      letter-spacing: -0.02em;
+    }
+    .logo-text .plus { color: var(--teal); }
+    .header-nav {
+      margin-left: auto;
+      font-size: 0.8rem;
+    }
+    .header-nav a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+    }
+    .header-nav a:hover { color: white; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--azul-marino) 0%, var(--azul-medio) 100%);
+      color: white;
+      padding: clamp(2.5rem, 6vw, 5rem) 2rem;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.75rem;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 3rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+    .hero p {
+      font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: clamp(2rem, 5vw, 4rem) 1.5rem;
+    }
+    .form-card {
+      background: white;
+      border-radius: 16px;
+      padding: clamp(2rem, 4vw, 3.5rem);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      width: 100%;
+      max-width: 580px;
+    }
+    .form-card h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      color: var(--azul-marino);
+      margin-bottom: 0.4rem;
+    }
+    .form-card p.subtitle {
+      font-size: 0.875rem;
+      color: #888;
+      margin-bottom: 2rem;
+    }
+
+    /* ── FORM FIELDS ── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 1.25rem;
+    }
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--azul-marino);
+      letter-spacing: 0.03em;
+    }
+    label .req { color: var(--teal); }
+    input, textarea, select {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--gris-texto);
+      border: 1.5px solid #dde0e8;
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      width: 100%;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(25,146,139,0.12);
+    }
+    textarea { min-height: 100px; resize: vertical; }
+
+    /* ── SUBMIT ── */
+    .btn-submit {
+      display: block;
+      width: 100%;
+      background: var(--teal);
+      color: white;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.85rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+      margin-top: 0.5rem;
+    }
+    .btn-submit:hover {
+      background: #157e77;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(25,146,139,0.3);
+    }
+
+    /* ── INFO BOXES ── */
+    .info-box {
+      background: var(--teal-suave);
+      border-left: 4px solid var(--teal);
+      border-radius: 0 8px 8px 0;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+      color: var(--azul-marino);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+    .info-box strong { display: block; color: var(--teal); margin-bottom: 0.2rem; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 1.5rem 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--azul-marino);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      font-size: 0.75rem;
+      padding: 1.25rem 2rem;
+    }
+    footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    footer a:hover { color: white; }
+
+    @media (max-width: 480px) {
+      .form-card { padding: 1.5rem; border-radius: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" style="text-decoration:none;">
+      <div class="logo-text">dis<span class="plus">+</span>capacidad</div>
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">← Volver a la presentación</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-eyebrow">dis+capacidad · Equipar para Equipar</div>
+    <h1>Encuentro de actualización<br>de firmware</h1>
+    <p>Completá el formulario y te avisamos con los detalles del próximo encuentro.</p>
+  </section>
+
+  <main>
+    <div class="form-card">
+      <h2>Anotate al encuentro</h2>
+      <p class="subtitle">El encuentro es gratuito y está pensado para los profesionales que recibieron la Valija EpE.</p>
+
+      <div class="info-box">
+        <strong>¿Qué vas a aprender?</strong>
+        Actualización de firmware del disMouse y disJoystick · Configurador online ·
+        Casos de uso avanzados · Espacio de consultas
+      </div>
+
+      <!--
+        INSTRUCCIONES FORMSPREE:
+        1. Crear cuenta en https://formspree.io
+        2. Crear un nuevo form
+        3. Reemplazar "YOUR_FORM_ID" con el ID que Formspree te asigna
+           (formato: https://formspree.io/f/xyzABCDE)
+        4. El email de destino se configura dentro de Formspree
+      -->
+      <form action="https://formspree.io/f/xbdzenbn" method="POST">
+
+        <!-- Campo oculto para redirigir tras el envío -->
+        <!-- IMPORTANTE: antes del evento, reemplazar con la URL absoluta de producción -->
+        <!-- Ejemplo: value="https://epe-discapacidad.netlify.app/gracias.html"         -->
+        <input type="hidden" name="_next" value="gracias.html">
+        <!-- Asunto del email -->
+        <input type="hidden" name="_subject" value="Nueva inscripción — Encuentro dis+capacidad">
+
+        <div class="field">
+          <label for="nombre">Nombre y apellido <span class="req">*</span></label>
+          <input type="text" id="nombre" name="nombre" required
+                 placeholder="Ej: María González" autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label for="institucion">Institución <span class="req">*</span></label>
+          <input type="text" id="institucion" name="institucion" required
+                 placeholder="Nombre del centro / institución de rehabilitación">
+        </div>
+
+        <div class="field">
+          <label for="email">Email <span class="req">*</span></label>
+          <input type="email" id="email" name="email" required
+                 placeholder="tu@email.com" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="telefono">Teléfono / WhatsApp</label>
+          <input type="tel" id="telefono" name="telefono"
+                 placeholder="+54 9 XXX XXX XXXX" autocomplete="tel">
+        </div>
+
+        <hr class="divider">
+
+        <div class="field">
+          <label for="mensaje">Consultas o comentarios (opcional)</label>
+          <textarea id="mensaje" name="mensaje"
+                    placeholder="¿Tenés alguna consulta antes del encuentro?"></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Enviar inscripción →</button>
+
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    dis+capacidad &nbsp;·&nbsp;
+    <a href="https://dismascapacidad.com.ar" target="_blank">dismascapacidad.com.ar</a>
+    &nbsp;·&nbsp;
+    <a href="https://wa.me/5493513466348" target="_blank">WhatsApp</a>
+  </footer>
+
+</body>
+</html>
