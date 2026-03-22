@@ -211,7 +211,7 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 }
 .prod:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.10); }
 .prod-img {
-  background: #dde2ea;
+  background: #ffffff;
   aspect-ratio: 1/1;
   display: flex;
   align-items: center;
@@ -219,7 +219,14 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
   overflow: hidden;
   flex-shrink: 0;
 }
-.prod-img img { width: 100%; height: 100%; object-fit: cover; }
+.prod-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 0.4rem;  /* pequeño margen para que el producto no llegue al borde */
+  box-sizing: border-box;
+}
 .prod-body { padding: clamp(0.35rem,0.7vw,0.65rem); text-align: center; }
 .prod-name { font-size: var(--t-small); font-weight: 700; color: var(--c-marino); line-height: 1.3; }
 .prod-desc { display: none; } /* visible solo en modal */
@@ -272,6 +279,20 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 .btn-t{background:var(--c-teal);color:#fff;}
 .btn-d{background:var(--c-marino);color:#fff;}
 .btn-wa{background:#25D366;color:#fff;}
+
+/* Logo box — contenedor del PNG del logo en todas las slides
+   Limita el ancho al espacio disponible para que no desborde en mobile */
+.rv:has(> img[src*="logo_dis"]) {
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.rv:has(> img[src*="logo_dis"]) img {
+  display: block;
+  height: clamp(36px, 7vh, 64px);
+  width: auto;
+  max-width: 100%;
+}
 
 /* Criteria block */
 .crit{background:var(--c-gris);border-radius:10px;padding:clamp(1rem,2vw,1.8rem);display:flex;flex-direction:column;gap:0.5rem;border-top:3px solid var(--c-teal);}
@@ -331,9 +352,15 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
   /* layouts de 2 columnas → 1 columna */
   .col2, .g2 { grid-template-columns: 1fr; }
 
-  /* grids de productos: 2 columnas en móvil medio, cards centradas */
-  .g3 { grid-template-columns: repeat(2,1fr); justify-items: center; }
-  .g4 { grid-template-columns: repeat(2,1fr); justify-items: center; }
+  /* grids de productos: 2 columnas en móvil medio */
+  .g3 { grid-template-columns: repeat(2,1fr); }
+  .g4 { grid-template-columns: repeat(2,1fr); }
+
+  /* stat-cards: siempre igual ancho (1 columna en mobile para evitar
+     el layout 2+1 donde la última card queda más angosta) */
+  .g3:has(.stat-card) { grid-template-columns: 1fr; }
+
+  /* prod-cards: siempre full-width dentro de su celda */
   .g3 .prod, .g4 .prod { width: 100%; }
 
   /* person cards lado a lado → apiladas */
@@ -384,9 +411,12 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
     --t-body:clamp(0.8rem,3.5vw,1rem);
   }
 
-  /* grids a 1 columna en pantallas muy pequeñas, card centrada con ancho limitado */
-  .g3, .g4 { grid-template-columns: 1fr; justify-items: center; }
-  .g3 .prod, .g4 .prod { width: 100%; max-width: 320px; }
+  /* grids a 1 columna en pantallas muy pequeñas */
+  .g3, .g4 { grid-template-columns: 1fr; }
+  /* prod-cards: ancho limitado y centrado con margin auto */
+  .g3 .prod, .g4 .prod { width: 100%; max-width: 320px; margin: 0 auto; }
+  /* stat-cards: siempre full-width */
+  .g3 .stat-card, .g4 .stat-card { width: 100%; max-width: none; margin: 0; }
 
   /* person: foto más chica */
   .photo { width: 72px; height: 72px; }
