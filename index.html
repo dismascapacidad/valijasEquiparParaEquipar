@@ -331,9 +331,10 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
   /* layouts de 2 columnas → 1 columna */
   .col2, .g2 { grid-template-columns: 1fr; }
 
-  /* grids de productos: 2 columnas en móvil medio */
-  .g3 { grid-template-columns: repeat(2,1fr); }
-  .g4 { grid-template-columns: repeat(2,1fr); }
+  /* grids de productos: 2 columnas en móvil medio, cards centradas */
+  .g3 { grid-template-columns: repeat(2,1fr); justify-items: center; }
+  .g4 { grid-template-columns: repeat(2,1fr); justify-items: center; }
+  .g3 .prod, .g4 .prod { width: 100%; }
 
   /* person cards lado a lado → apiladas */
   .slide-body:has(> .person-card + .person-card) {
@@ -383,8 +384,9 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
     --t-body:clamp(0.8rem,3.5vw,1rem);
   }
 
-  /* grids a 1 columna en pantallas muy pequeñas */
-  .g3, .g4 { grid-template-columns: 1fr; }
+  /* grids a 1 columna en pantallas muy pequeñas, card centrada con ancho limitado */
+  .g3, .g4 { grid-template-columns: 1fr; justify-items: center; }
+  .g3 .prod, .g4 .prod { width: 100%; max-width: 320px; }
 
   /* person: foto más chica */
   .photo { width: 72px; height: 72px; }
@@ -474,8 +476,8 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 <section class="slide dark" data-s="portada" data-n="1">
   <div class="sb">
     <div class="cnt" style="border-right:1px solid rgba(255,255,255,0.07);">
-      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;align-self:flex-start;">
-        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;object-fit:contain;display:block;">
+      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;width:fit-content;">
+        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;display:block;">
       </div>
       <h1 class="rv w" style="margin-top:var(--gap);">Equipar<br>para<br><span class="accent">Equipar</span></h1>
       <p class="rv dim" style="max-width:36ch;">Tecnología Asistiva para instituciones de rehabilitación de la Provincia de Córdoba</p>
@@ -603,8 +605,8 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
   <div class="sb">
     <div class="cnt">
       <span class="eyebrow azul rv">Quiénes somos</span>
-      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;border:1px solid rgba(0,0,0,0.06);align-self:flex-start;">
-        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;object-fit:contain;display:block;">
+      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;width:fit-content;border:1px solid rgba(0,0,0,0.06);">
+        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;display:block;">
       </div>
       <p class="rv" style="font-size:var(--t-h3);font-weight:600;color:var(--c-texto);max-width:44ch;line-height:1.4;">Diseño propio. Conocimiento clínico. Hecho en Córdoba.</p>
       <div class="divider rv"></div>
@@ -1060,8 +1062,8 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 <section class="slide dark" data-s="cierre" data-n="24">
   <div class="sb" style="background:var(--c-marino);">
     <div class="cnt" style="align-items:center;text-align:center;justify-content:center;gap:var(--gap);">
-      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;display:inline-block;align-self:flex-start;">
-        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;object-fit:contain;display:block;">
+      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;width:fit-content;">
+        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;display:block;">
       </div>
       <div class="divider rv" style="align-self:center;"></div>
       <div class="quote rv" style="max-width:52ch;padding-left:1.5rem;color:rgba(255,255,255,0.82);">Dismascapacidad existe porque creemos que la tecnología asistiva funciona cuando llega bien acompañada.</div>
