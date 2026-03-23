@@ -603,19 +603,30 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
         </div>
       </div>
       <div class="rv" style="margin-top:calc(var(--gap)*0.5);">
-        <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.8rem;">El circuito de la Tecnología Asistiva</div>
-        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.35rem;">
-          <div style="background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.08);border-radius:8px;padding:0.38rem 0.75rem;font-size:var(--t-body);font-weight:600;color:var(--c-texto);">Gobierno</div>
-          <span style="color:#ccc;">›</span>
-          <div style="background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.08);border-radius:8px;padding:0.38rem 0.75rem;font-size:var(--t-body);font-weight:600;color:var(--c-texto);">Obras sociales</div>
-          <span style="color:#ccc;">›</span>
-          <div style="background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.08);border-radius:8px;padding:0.38rem 0.75rem;font-size:var(--t-body);font-weight:600;color:var(--c-texto);">Instituciones</div>
-          <span style="color:#ccc;">›</span>
-          <div style="background:rgba(25,146,139,0.1);border:1.5px solid rgba(25,146,139,0.45);border-radius:8px;padding:0.38rem 0.75rem;font-size:var(--t-body);font-weight:700;color:var(--c-teal);">dis+capacidad</div>
-          <span style="color:#ccc;">›</span>
-          <div style="background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.08);border-radius:8px;padding:0.38rem 0.75rem;font-size:var(--t-body);font-weight:600;color:var(--c-texto);">Profesionales</div>
-          <span style="color:#ccc;">›</span>
-          <div style="background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.08);border-radius:8px;padding:0.38rem 0.75rem;font-size:var(--t-body);font-weight:600;color:var(--c-texto);">Pacientes</div>
+        <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.5rem;">El proceso de aplicación de Tecnología Asistiva</div>
+        <!-- Cyclic process diagram -->
+        <div style="position:relative;padding-top:2.6rem;">
+          <!-- Return arc arrow (SVG) -->
+          <svg style="position:absolute;top:0;left:0;width:100%;height:2.6rem;overflow:visible;" viewBox="0 0 400 42" preserveAspectRatio="none">
+            <defs>
+              <marker id="arh" markerWidth="9" markerHeight="7" refX="1" refY="3.5" orient="auto">
+                <polygon points="9 3.5, 0 0, 0 7" fill="#3a5fad"/>
+              </marker>
+            </defs>
+            <path d="M 375,40 C 375,8 25,8 25,40"
+                  stroke="#3a5fad" stroke-width="3" fill="none" stroke-linecap="round"
+                  marker-start="url(#arh)"/>
+          </svg>
+          <!-- Four process boxes -->
+          <div style="display:flex;align-items:stretch;gap:0.4rem;">
+            <div style="flex:1;background:#3a5fad;color:#fff;border-radius:8px;padding:0.55rem 0.5rem;font-size:var(--t-body);font-weight:600;text-align:center;line-height:1.3;">Evaluación<br>Inicial</div>
+            <div style="display:flex;align-items:center;color:#aaa;font-size:1.1em;padding:0 0.1rem;">⟶</div>
+            <div style="flex:1;background:#3a5fad;color:#fff;border-radius:8px;padding:0.55rem 0.5rem;font-size:var(--t-body);font-weight:600;text-align:center;line-height:1.3;">Selección del equipamiento adecuado</div>
+            <div style="display:flex;align-items:center;color:#aaa;font-size:1.1em;padding:0 0.1rem;">⟶</div>
+            <div style="flex:1;background:#3a5fad;color:#fff;border-radius:8px;padding:0.55rem 0.5rem;font-size:var(--t-body);font-weight:600;text-align:center;line-height:1.3;">Entrenamiento<br>en el uso</div>
+            <div style="display:flex;align-items:center;color:#aaa;font-size:1.1em;padding:0 0.1rem;">⟶</div>
+            <div style="flex:1;background:#3a5fad;color:#fff;border-radius:8px;padding:0.55rem 0.5rem;font-size:var(--t-body);font-weight:600;text-align:center;line-height:1.3;">Seguimiento</div>
+          </div>
         </div>
       </div>
       <div class="rv" style="margin-top:calc(var(--gap)*0.6);background:rgba(25,146,139,0.07);border-left:3px solid var(--c-teal);border-radius:0 8px 8px 0;padding:0.75rem 1rem;">
