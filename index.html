@@ -200,47 +200,41 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 
 /* Product card — compacta con modal */
 .prod {
-  background: var(--c-gris); /* fallback; JS lo reemplaza con el color de esquina de la foto */
-  border-radius: 10px;
+  background: var(--c-gris);
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   position: relative;
   cursor: pointer;
   transition: transform 0.18s, box-shadow 0.18s;
 }
-.prod:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.prod:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.10); }
 .prod-img {
-  background: transparent; /* hereda el color del .prod, pintado por JS */
-  aspect-ratio: 1/1;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  padding: 0.6rem;
   flex-shrink: 0;
 }
 .prod-img img {
-  width: 92%;
-  height: 92%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   object-position: center;
 }
-.prod-body { padding: clamp(0.3rem,0.6vw,0.6rem); text-align: center; }
-.prod-name { font-size: var(--t-small); font-weight: 700; color: var(--c-marino); line-height: 1.3; }
+.prod-body { padding: clamp(0.4rem,0.7vw,0.7rem) clamp(0.4rem,0.6vw,0.6rem); width:100%; }
+.prod-name { font-size: var(--t-small); font-weight: 700; color: var(--c-marino); line-height: 1.3; text-align:center; }
 .prod-desc { display: none; } /* visible solo en modal */
 
-/* Prod grids: siempre 2 columnas — independiente del breakpoint.
-   El modal compensa el tamaño reducido de la card. */
-.g3:has(>.prod) { grid-template-columns: repeat(2,1fr); }
-.g4:has(>.prod) { grid-template-columns: repeat(2,1fr); }
-
-/* 3 items: el último (que queda solo) ocupa ambas columnas
-   pero se limita al 50% para quedar centrado como si fuera 1 celda */
-.g3:has(>.prod) > .prod:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
-  justify-self: center;
-  width: 50%;
-}
+/* Prod grids — desktop: todos en una fila */
+.g3:has(>.prod) { grid-template-columns: repeat(3,1fr); }
+.g4:has(>.prod) { grid-template-columns: repeat(4,1fr); }
 .badge-fw{position:absolute;top:0.45rem;right:0.45rem;background:var(--c-teal);color:#fff;font-size:clamp(0.55rem,0.82vw,0.68rem);font-weight:700;padding:0.28rem 0.6rem;border-radius:4px;letter-spacing:0.04em;white-space:nowrap;box-shadow:0 2px 8px rgba(25,146,139,0.4);}
 
 /* Grids */
@@ -363,16 +357,24 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
   /* layouts de 2 columnas → 1 columna */
   .col2, .g2 { grid-template-columns: 1fr; }
 
-  /* grids de productos: 2 columnas en móvil medio */
+  /* grids generales: 2 columnas en móvil */
   .g3 { grid-template-columns: repeat(2,1fr); }
   .g4 { grid-template-columns: repeat(2,1fr); }
 
-  /* stat-cards: siempre igual ancho (1 columna en mobile para evitar
-     el layout 2+1 donde la última card queda más angosta) */
+  /* prod grids: 2×2, item impar final centrado al mismo tamaño que las otras cards */
+  .g3:has(>.prod), .g4:has(>.prod) { grid-template-columns: repeat(2,1fr); }
+  .g3:has(>.prod) > .prod:last-child:nth-child(odd),
+  .g4:has(>.prod) > .prod:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: calc(50% - var(--gap) / 2);
+    margin: 0 auto;
+  }
+
+  /* stat-cards: 1 columna */
   .g3:has(.stat-card) { grid-template-columns: 1fr; }
 
-  /* prod-cards: siempre full-width dentro de su celda */
-  .g3 .prod, .g4 .prod { width: 100%; }
+  /* prod-cards: full-width dentro de su celda */
+  .g3 .prod, .g4 .prod { width: 100%; max-width: 100%; }
 
   /* person cards lado a lado → apiladas */
   .slide-body:has(> .person-card + .person-card) {
@@ -419,13 +421,17 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
     --t-body:clamp(0.8rem,3.5vw,1rem);
   }
 
-  /* En pantallas muy pequeñas los prod grids pasan a 1 columna */
-  .g3:has(>.prod), .g4:has(>.prod) { grid-template-columns: 1fr; }
-  /* El override del 3er item centrado no aplica en 1 col — cada prod ocupa el 100% */
-  .g3:has(>.prod) > .prod:last-child:nth-child(odd) { width: 100%; }
-  /* stat-cards: 1 columna, full-width */
-  .g3, .g4 { grid-template-columns: 1fr; }
+  /* stat-cards y grids sin prod: 1 columna */
+  .g3:not(:has(>.prod)), .g4:not(:has(>.prod)) { grid-template-columns: 1fr; }
   .g3 .stat-card, .g4 .stat-card { width: 100%; max-width: none; margin: 0; }
+  /* prod grids: mantener 2 columnas incluso en pantallas muy chicas */
+  .g3:has(>.prod), .g4:has(>.prod) { grid-template-columns: repeat(2,1fr); }
+  .g3:has(>.prod) > .prod:last-child:nth-child(odd),
+  .g4:has(>.prod) > .prod:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: calc(50% - var(--gap) / 2);
+    margin: 0 auto;
+  }
 
   /* person: foto más chica */
   .photo { width: 72px; height: 72px; }
@@ -603,7 +609,7 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
         </div>
       </div>
       <div class="rv" style="margin-top:calc(var(--gap)*0.5);">
-        <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.6rem;">El proceso de aplicación de Tecnología Asistiva</div>
+        <div class="eyebrow" style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.6rem;">El proceso de aplicación de Tecnología Asistiva</div>
         <!-- 2×2 cyclic diagram: → ↓ ← ↑ -->
         <div style="display:grid;grid-template-columns:1fr 2.8rem 1fr;grid-template-rows:auto 2rem auto;align-items:center;justify-items:stretch;">
           <!-- Fila 1 -->
@@ -660,7 +666,7 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
       <p class="rv" style="font-size:var(--t-h3);font-weight:600;color:var(--c-texto);max-width:44ch;line-height:1.4;">Desarrollos basados en conocimiento clínico.</p>
       <p class="rv" style="max-width:52ch;color:var(--c-texto);line-height:1.6;">Empresa cordobesa fundada en 2016 dedicada al desarrollo de equipamiento de Tecnología Asistiva personalizable y accesible.</p>
       <div class="divider rv"></div>
-      <h3 class="rv" style="font-size:var(--t-h3);font-weight:700;color:var(--c-marino);">Algunos hitos importantes</h3>
+      <h4 class="rv" style="font-size:var(--t-h3);font-weight:700;color:var(--c-marino);">Algunos hitos importantes</h4>
       <div class="rv" style="display:flex;gap:0.5rem;flex-wrap:wrap;">
         <span class="tag tag-a">Plan Sarmiento · CABA · 2019</span>
         <span class="tag tag-a">Plan Ceibal · Uruguay · 2019–2021</span>
@@ -684,7 +690,7 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
   <div class="sb">
     <div class="cnt">
       <span class="eyebrow azul rv">Equipar para Equipar</span>
-      <h2 class="rv">No solo el usuario final: Trabajamos pensando en todos los actores que forman parte del proceso rehabilitador.</h2>
+      <h2 class="rv">No solo el usuario final: <br> Trabajamos pensando en todos los actores que forman parte del proceso rehabilitador.</h2>
       <div class="divider rv"></div>
       <div class="col2 rv">
         <div style="display:flex;flex-direction:column;gap:0.6rem;">
@@ -844,11 +850,19 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
     <div class="cnt">
       <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">Valija · 4 de 4</span>
       <h2 class="rv">Comunicación Aumentativa y Alternativa</h2>
-      <div class="col2 rv" style="margin-top:calc(var(--gap)*0.5);align-items:stretch;">
-        <div class="prod-img" style="border-radius:10px;font-size:var(--t-h3);flex-direction:column;gap:0.5rem;min-height:clamp(100px,18vh,180px);">
-          <img src="assets/img/discom.jpg" alt="disCom lvls+" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+      <div class="rv" style="margin-top:calc(var(--gap)*0.5);display:flex;flex-direction:column;gap:var(--gap);">
+        <!-- Card del producto, centrada -->
+        <div style="display:flex;justify-content:center;">
+          <div class="prod" style="width:clamp(160px,32%,260px);">
+            <div class="prod-img"><img src="assets/img/discom.jpg" alt="disCom lvls+"></div>
+            <div class="prod-body">
+              <div class="prod-name">disCom lvls+</div>
+              <div class="prod-desc">Comunicador de voz con grabación digital. Modos por niveles y secuencial.</div>
+            </div>
+          </div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:var(--gap);">
+        <!-- Boxes de funcionalidades -->
+        <div class="col2">
           <div class="hl">
             <div style="font-size:var(--t-label);font-weight:700;color:var(--c-teal);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;">Modo por Niveles</div>
             <p>Hasta 9 mensajes en 3 niveles. Ideal para primeros pasos de causa-efecto.</p>
@@ -1281,41 +1295,8 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
   });
 })();
 
-/* --- Fondo de card = color de esquina de la foto del producto ---
-   Dibuja cada imagen en un canvas 4×4 y promedia los 4 píxeles
-   de esquina para obtener el color de fondo de la foto.
-   Resultado: el producto parece "flotar" sin marco blanco visible. */
-(function(){
-  function sampleProdBg(imgEl, cardEl) {
-    try {
-      var c = document.createElement('canvas');
-      c.width = 4; c.height = 4;
-      var ctx = c.getContext('2d');
-      ctx.drawImage(imgEl, 0, 0, 4, 4);
-      var d = ctx.getImageData(0, 0, 4, 4).data;
-      var corners = [[0,0],[3,0],[0,3],[3,3]];
-      var r=0, g=0, b=0;
-      corners.forEach(function(pt){
-        var i = (pt[1]*4 + pt[0]) * 4;
-        r += d[i]; g += d[i+1]; b += d[i+2];
-      });
-      var bg = 'rgb('+Math.round(r/4)+','+Math.round(g/4)+','+Math.round(b/4)+')';
-      cardEl.style.background = bg;
-      var imgBox = cardEl.querySelector('.prod-img');
-      if (imgBox) imgBox.style.background = bg;
-    } catch(e) { /* falla en CORS o canvas bloqueado — se usa el fondo fallback */ }
-  }
-
-  document.querySelectorAll('.prod').forEach(function(card){
-    var img = card.querySelector('.prod-img img');
-    if (!img) return;
-    if (img.complete && img.naturalWidth > 0) {
-      sampleProdBg(img, card);
-    } else {
-      img.addEventListener('load', function(){ sampleProdBg(img, card); });
-    }
-  });
-})();
+/* canvas color sampling eliminado — el fondo uniforme var(--c-gris) con
+   área de imagen blanca da un look consistente con las supp-item cards */
 
 /* --- QR Code generation --- */
 (function(){
