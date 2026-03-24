@@ -405,6 +405,15 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     min-height: 100dvh;
     overflow: visible;
   }
+  /* slides con video de fondo: necesitan overflow:hidden y altura fija */
+  .slide:has(>video[autoplay]) {
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .slide > video[autoplay] {
+    height: 100dvh;
+    min-height: 100%;
+  }
   .sb  { overflow: visible; flex-direction: column; }
   .cnt { overflow: visible; }
 
@@ -1384,6 +1393,12 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     goTo(current + (e.deltaY > 0 ? 1 : -1));
     setTimeout(() => { wLock = false; }, 900);
   }, {passive:true});
+
+  /* --- Inicializar videos de fondo al cargar la página --- */
+  document.querySelectorAll('video[autoplay]').forEach(v => {
+    v.playbackRate = 0.4;
+    v.play().catch(() => {});
+  });
 
   /* --- Video overlays: hide play button when video has a source --- */
   document.querySelectorAll('.vid-ph').forEach(ph => {
