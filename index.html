@@ -446,7 +446,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
 
   /* panel lateral derecho se oculta (excepto cuando tiene imagen de producto) */
   .pnl { display: none; }
-  .pnl.pnl-caa { display:block !important; width:100% !important; height:auto !important; min-height:200px; max-height:45vw; }
+  .pnl.pnl-caa { display:block !important; width:100% !important; height:auto !important; }
 
   /* nav de secciones se oculta, aparece burger */
   .s-nav { display: none; }
@@ -1436,17 +1436,19 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
         s.style.height = h + 'px';
         const v = s.querySelector('video');
         if (v) {
+          // Escalar por altura: el video (horizontal) desborda los costados y cubre todo
           v.style.position   = 'absolute';
-          v.style.top        = '0';
-          v.style.left       = '0';
-          v.style.width      = w + 'px';
+          v.style.top        = '50%';
+          v.style.left       = '50%';
+          v.style.width      = 'auto';
           v.style.height     = h + 'px';
-          v.style.objectFit  = 'cover';
+          v.style.minWidth   = w + 'px';
+          v.style.objectFit  = 'unset';
+          v.style.transform  = 'translate(-50%, -50%)';
           v.style.zIndex     = '0';
-          v.style.transform  = 'translateZ(0)';
         }
-        // Fix overlay divs to full height
         s.querySelectorAll(':scope > [style*="z-index:1"]').forEach(ov => {
+          ov.style.width  = w + 'px';
           ov.style.height = h + 'px';
         });
       });
