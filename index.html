@@ -56,24 +56,60 @@ body{font-family:var(--font);height:100%;overflow-x:hidden;background:var(--c-gr
   padding:0 var(--pad-x);
   border-bottom:1px solid rgba(255,255,255,0.06);
 }
-.h-logo{
-  font-size:clamp(0.8rem,1.4vw,1rem);font-weight:800;
-  color:#fff;letter-spacing:-0.02em;white-space:nowrap;flex-shrink:0;
-}
-.h-logo .plus{color:var(--c-teal);}
+.h-logo{display:flex;align-items:center;flex-shrink:0;}
+.h-logo-img{background:#fff;border-radius:7px;padding:0.28rem 0.7rem;display:flex;align-items:center;}
+.h-logo-img img{height:clamp(22px,3.5vh,34px);width:auto;display:block;}
 .s-nav{display:flex;gap:clamp(0.25rem,0.8vw,0.7rem);align-items:center;}
 .sn{
   font-size:var(--t-label);font-weight:600;letter-spacing:0.08em;
   text-transform:uppercase;padding:0.28rem 0.75rem;border-radius:20px;
   color:rgba(255,255,255,0.28);border:1px solid rgba(255,255,255,0.08);
-  white-space:nowrap;transition:all 0.3s;cursor:default;
+  white-space:nowrap;transition:all 0.3s;cursor:pointer;
 }
-.sn.active{color:#fff;}
-.sn[data-s="contexto"].active{border-color:var(--c-teal);background:rgba(25,146,139,0.22);}
-.sn[data-s="quienes"].active {border-color:var(--c-medio);background:rgba(44,104,144,0.25);}
-.sn[data-s="valija"].active  {border-color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.1);}
-.sn[data-s="impacto"].active {border-color:var(--c-teal);background:rgba(25,146,139,0.22);}
-.sn[data-s="cierre"].active  {border-color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.1);}
+.sn:hover{color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.25);}
+.sn.active{color:#fff;border-color:var(--c-teal);background:rgba(25,146,139,0.2);}
+/* --- Burger button (mobile only) --- */
+.burger-btn{display:none;background:none;border:none;color:rgba(255,255,255,0.8);font-size:1.5rem;cursor:pointer;padding:0.4rem;line-height:1;flex-shrink:0;}
+/* --- Mobile nav: side drawer --- */
+.mn-backdrop{
+  position:fixed;inset:0;z-index:399;background:rgba(0,0,0,0.48);
+  opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(2px);
+}
+.mn-backdrop.open{opacity:1;pointer-events:auto;}
+.mobile-nav{
+  position:fixed;top:0;left:0;bottom:0;z-index:400;
+  width:min(300px,82vw);
+  background:var(--c-marino);
+  display:flex;flex-direction:column;align-items:stretch;
+  padding-top:calc(var(--header-h) + 0.8rem);
+  padding-bottom:2rem;
+  transform:translateX(-100%);
+  transition:transform 0.32s cubic-bezier(0.16,1,0.3,1);
+  visibility:hidden;
+  border-right:1px solid rgba(255,255,255,0.07);
+  box-shadow:6px 0 32px rgba(0,0,0,0.45);
+  overflow-y:auto;
+}
+.mobile-nav.open{transform:translateX(0);visibility:visible;}
+.mn-drawer-header{
+  position:absolute;top:0;left:0;right:0;height:var(--header-h);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.1rem;border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.mn-drawer-title{font-size:var(--t-small);font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;}
+.mn-close{background:none;border:none;color:rgba(255,255,255,0.4);font-size:1.25rem;cursor:pointer;line-height:1;padding:0.3rem;}
+.mn-item{
+  display:flex;align-items:center;gap:0.85rem;
+  font-size:clamp(0.85rem,3.5vw,1rem);font-weight:600;
+  color:rgba(255,255,255,0.55);cursor:pointer;
+  padding:0.85rem 1.3rem;border-left:3px solid transparent;
+  transition:color 0.18s,background 0.18s,border-color 0.18s;
+  text-align:left;
+}
+.mn-item:hover,.mn-item:active{color:#fff;background:rgba(255,255,255,0.06);}
+.mn-item.active{color:#fff;border-left-color:var(--c-teal);background:rgba(25,146,139,0.12);}
+.mn-icon{font-size:1.05em;flex-shrink:0;width:1.4em;text-align:center;}
+.mn-divider{height:1px;background:rgba(255,255,255,0.06);margin:0.4rem 1.3rem;}
 
 /* ============================================================
    PROGRESS BAR
@@ -371,8 +407,9 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
   /* panel lateral derecho se oculta */
   .pnl { display: none; }
 
-  /* nav de secciones se oculta */
+  /* nav de secciones se oculta, aparece burger */
   .s-nav { display: none; }
+  .burger-btn { display: block; }
 
   /* layouts de 2 columnas → 1 columna */
   .col2, .g2 { grid-template-columns: 1fr; }
@@ -520,15 +557,42 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
 <div class="progress-bar" id="progressBar"></div>
 
 <header class="pres-header">
-  <div class="h-logo">dis<span class="plus">+</span>capacidad</div>
+  <div class="h-logo">
+    <div class="h-logo-img">
+      <img src="assets/img/logo_dis.png" alt="dis+capacidad">
+    </div>
+  </div>
   <nav class="s-nav">
-    <span class="sn" data-s="contexto">Contexto</span>
-    <span class="sn" data-s="quienes">Quiénes somos</span>
-    <span class="sn" data-s="valija">La valija</span>
-    <span class="sn" data-s="impacto">Impacto</span>
-    <span class="sn" data-s="cierre">Cierre</span>
+    <span class="sn" data-n="2">Contexto</span>
+    <span class="sn" data-n="4">Tecnología Asistiva</span>
+    <span class="sn" data-n="6">Equipar para Equipar</span>
+    <span class="sn" data-n="9">La valija EpE</span>
+    <span class="sn" data-n="14">Firmware & Configurador</span>
+    <span class="sn" data-n="21">Potenciá tus prestaciones</span>
+    <span class="sn" data-n="23">Contacto</span>
   </nav>
+  <button class="burger-btn" id="burgerBtn" aria-label="Abrir menú">☰</button>
 </header>
+
+<!-- Backdrop del drawer mobile -->
+<div class="mn-backdrop" id="mnBackdrop"></div>
+
+<!-- Side drawer de navegación mobile -->
+<nav class="mobile-nav" id="mobileNav" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="mn-drawer-header">
+    <span class="mn-drawer-title">Navegación</span>
+    <button class="mn-close" id="mobileNavClose" aria-label="Cerrar menú">✕</button>
+  </div>
+  <span class="mn-item" data-n="2"><span class="mn-icon">🗺️</span>Contexto</span>
+  <span class="mn-item" data-n="4"><span class="mn-icon">♿</span>Tecnología Asistiva</span>
+  <span class="mn-item" data-n="6"><span class="mn-icon">🧳</span>Equipar para Equipar</span>
+  <div class="mn-divider"></div>
+  <span class="mn-item" data-n="9"><span class="mn-icon">📦</span>La valija EpE</span>
+  <span class="mn-item" data-n="14"><span class="mn-icon">⚙️</span>Firmware & Configurador</span>
+  <div class="mn-divider"></div>
+  <span class="mn-item" data-n="21"><span class="mn-icon">⚡</span>Potenciá tus prestaciones</span>
+  <span class="mn-item" data-n="23"><span class="mn-icon">💬</span>Contacto</span>
+</nav>
 
 <footer class="pres-footer">
   <span class="f-brand">dis+capacidad · Equipar para Equipar</span>
@@ -554,7 +618,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     <div class="pnl" style="width:clamp(240px,35vw,420px);">
       <div class="glow"></div>
       <div class="rv-sc" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:0.8rem;text-align:center;">
-        <p style="font-size:var(--t-body);color:rgba(255,255,255,0.65);max-width:22ch;line-height:1.5;">Escaneá y registrá tu institución antes de continuar</p>
+        <p style="font-size:var(--t-body);color:rgba(255,255,255,0.65);max-width:22ch;line-height:1.5;">Escaneá el QR para acceder al material.</p>
         <div class="qr-wrap" id="qr-form"></div>
         <div class="qr-note" style="color:rgba(255,255,255,0.3);">Formulario de registro</div>
       </div>
@@ -667,10 +731,10 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
         <div class="fn"><div class="fi">✅</div><div class="fl">Indicación</div></div><div class="fa">→</div>
         <div class="fn hl"><div class="fi">🙌</div><div class="fl">Acceso</div></div>
       </div>
-      <p class="rv" style="text-align:center;color:var(--c-texto);font-weight:500;margin-top:var(--gap);max-width:60ch;align-self:center;">Evaluaciones con más herramientas potencian las capacidades de la institución y sus profesionales y permiten indicar mejor. Eso implica mejores abordajes a pacientes y familias.</p>
-      <div class="rv" style="margin-top:calc(var(--gap)*0.6);background:rgba(25,146,139,0.07);border-left:3px solid var(--c-teal);border-radius:0 8px 8px 0;padding:0.75rem 1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;width:100%;">
-        <p style="flex:1;min-width:20ch;font-size:var(--t-body);color:var(--c-texto);line-height:1.5;">Conocé el programa AcceDer: Recursos para ofrecer oportunidades de accesibilidad para personas con discapacidad y sus entornos.</p>
-        <a href="https://drive.google.com/drive/folders/1oW-B7zFBAsbbQ_aeGFLi0NIRS2limb17" target="_blank" style="display:inline-block;background:var(--c-teal);color:#fff;font-weight:700;font-size:var(--t-body);padding:0.55rem 1.1rem;border-radius:8px;text-decoration:none;white-space:nowrap;transition:background 0.15s;">Conocer más</a>
+      <p class="rv" style="text-align:center;color:var(--c-texto);font-weight:500;margin-top:var(--gap);max-width:60ch;align-self:center;">Evaluaciones con más herramientas potencian las capacidades de la institución y sus profesionales y permiten indicar mejor.<br>Eso implica mejores abordajes a pacientes y familias.</p>
+      <div class="rv" style="margin-top:calc(var(--gap)*0.6);background:rgba(25,146,139,0.07);border-left:3px solid var(--c-teal);border-radius:0 8px 8px 0;padding:0.75rem 1rem;display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;width:100%;text-align:center;">
+        <a href="https://drive.google.com/drive/folders/1oW-B7zFBAsbbQ_aeGFLi0NIRS2limb17" target="_blank" style="display:inline-block;background:var(--c-teal);color:#fff;font-weight:700;font-size:var(--t-body);padding:0.55rem 1.1rem;border-radius:8px;text-decoration:none;white-space:nowrap;">Conocé el programa AcceDer</a>
+        <p style="font-size:var(--t-body);color:var(--c-texto);line-height:1.5;">Recursos para ofrecer oportunidades de accesibilidad para personas con discapacidad y sus entornos.</p>
       </div>
     </div>
   </div>
@@ -711,8 +775,8 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
       <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;width:fit-content;border:1px solid rgba(0,0,0,0.06);">
         <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;display:block;">
       </div>
-      <p class="rv" style="font-size:var(--t-h3);font-weight:600;color:var(--c-texto);max-width:44ch;line-height:1.4;">Desarrollos basados en conocimiento clínico.</p>
-      <p class="rv" style="max-width:52ch;color:var(--c-texto);line-height:1.6;">Empresa cordobesa fundada en 2016 dedicada al desarrollo de equipamiento de Tecnología Asistiva personalizable y accesible.</p>
+      <p class="rv" style="font-size:var(--t-h3);font-weight:600;color:var(--c-texto);max-width:44ch;line-height:1.4;">Tecnología Asistiva.</p>
+      <p class="rv" style="max-width:52ch;color:var(--c-texto);line-height:1.6;">Empresa cordobesa fundada en 2016 dedicada al desarrollo de equipamiento de Tecnología Asistiva personalizable y Accesible.</p>
       <div class="divider rv"></div>
       <h4 class="rv" style="font-size:var(--t-h3);font-weight:700;color:var(--c-marino);">Algunos hitos importantes</h4>
       <div class="rv" style="display:flex;gap:0.5rem;flex-wrap:wrap;">
@@ -724,10 +788,9 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     <div class="pnl">
       <div class="glow"></div>
       <div class="rv-sc" style="position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;gap:0.8rem;">
-        <div style="font-size:var(--t-display);font-weight:800;color:var(--c-teal);line-height:1;">+10</div>
+        <div style="font-size:var(--t-display);font-weight:800;color:var(--c-teal);line-height:1;">10</div>
         <div style="color:rgba(255,255,255,0.5);font-size:var(--t-body);">años de trayectoria</div>
         <div style="width:2rem;height:2px;background:var(--c-teal);margin:0.3rem auto;"></div>
-        <div style="color:rgba(255,255,255,0.25);font-size:var(--t-label);letter-spacing:0.12em;text-transform:uppercase;">Factura 0001<br>NeuroAbility</div>
       </div>
     </div>
   </div>
@@ -763,23 +826,30 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
 <!-- ============================================================
      BLOQUE 3 — LA VALIJA
      ============================================================ -->
-<section class="slide" data-s="valija" data-n="9">
-  <div class="sb">
+<section class="slide" data-s="valija" data-n="9" style="position:relative;overflow:hidden;">
+  <!-- Video de fondo -->
+  <video autoplay muted loop playsinline id="vid-valija" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+    <source src="assets/video/VIDEO_VALIJA.mp4" type="video/mp4">
+  </video>
+  <!-- Overlay oscuro semitransparente -->
+  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(10,16,28,0.62);z-index:1;"></div>
+  <!-- Contenido encima -->
+  <div class="sb" style="position:relative;z-index:2;">
     <div class="cnt">
-      <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">La valija</span>
-      <h2 class="rv">¿Por qué estos dispositivos?</h2>
+      <span class="eyebrow rv" style="color:rgba(255,255,255,0.5);">La valija</span>
+      <h2 class="rv" style="color:#fff;">¿Por qué estos dispositivos?</h2>
       <div class="g3 rv" style="margin-top:calc(var(--gap)*0.5);">
-        <div class="crit">
-          <div class="crit-ttl">Versátil</div>
-          <div class="crit-txt">Sirve para más de un usuario y más de una situación clínica.</div>
+        <div class="crit" style="background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border-top-color:var(--c-teal);">
+          <div class="crit-ttl" style="color:var(--c-teal);">Versátil</div>
+          <div class="crit-txt" style="color:rgba(255,255,255,0.8);">Sirve para más de un usuario y más de una situación clínica.</div>
         </div>
-        <div class="crit" style="border-top-color:var(--c-medio);">
-          <div class="crit-ttl" style="color:var(--c-medio);">Configurable</div>
-          <div class="crit-txt">El profesional puede adaptarlo sin depender de soporte externo.</div>
+        <div class="crit" style="background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border-top-color:var(--c-medio);">
+          <div class="crit-ttl" style="color:var(--c-teal);">Configurable</div>
+          <div class="crit-txt" style="color:rgba(255,255,255,0.8);">El profesional puede adaptarlo sin depender de soporte externo.</div>
         </div>
-        <div class="crit" style="border-top-color:var(--c-marino);">
-          <div class="crit-ttl" style="color:var(--c-marino);">Punto de partida</div>
-          <div class="crit-txt">Herramienta de validación, no solución definitiva.</div>
+        <div class="crit" style="background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border-top-color:#a0b4d0;">
+          <div class="crit-ttl" style="color:var(--c-teal);">Punto de partida</div>
+          <div class="crit-txt" style="color:rgba(255,255,255,0.8);">Herramienta de validación, no solución definitiva.</div>
         </div>
       </div>
     </div>
@@ -838,7 +908,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
           <div class="prod-body"><div class="prod-name">Adaptadores USB OTG ×3</div><div class="prod-desc">Conectan dispositivos USB a cualquier Android o tablet.</div></div>
         </div>
       </div>
-      <p class="rv" style="color:var(--c-medio);font-weight:600;">Para usuarios con movimiento funcional que necesitan una interfaz adaptada.</p>
+      <p class="rv" style="color:var(--c-medio);font-weight:600;">Dispositivos que permiten tanto posicionar el foco como confirmar la selección.</p>
     </div>
   </div>
 </section>
@@ -871,33 +941,25 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
 
 <section class="slide" data-s="valija" data-n="13">
   <div class="sb">
+    <!-- Izquierda: eyebrow + título + cards apiladas + párrafo -->
     <div class="cnt">
       <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">Valija · 4 de 4</span>
       <h2 class="rv">Comunicación Aumentativa y Alternativa</h2>
-      <div class="rv" style="margin-top:calc(var(--gap)*0.5);display:flex;flex-direction:column;gap:var(--gap);">
-        <!-- Card del producto, centrada -->
-        <div style="display:flex;justify-content:center;">
-          <div class="prod" style="width:clamp(160px,32%,260px);">
-            <div class="prod-img"><img src="assets/img/discom.jpg" alt="disCom lvls+"></div>
-            <div class="prod-body">
-              <div class="prod-name">disCom lvls+</div>
-              <div class="prod-desc">Comunicador de voz con grabación digital. Modos por niveles y secuencial.</div>
-            </div>
-          </div>
+      <div style="display:flex;flex-direction:column;gap:var(--gap);margin-top:calc(var(--gap)*0.5);">
+        <div class="hl rv">
+          <div style="font-size:var(--t-label);font-weight:700;color:var(--c-teal);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;">Modo por Niveles</div>
+          <p>Hasta 9 mensajes en 3 niveles. Ideal para primeros pasos de causa-efecto.</p>
         </div>
-        <!-- Boxes de funcionalidades -->
-        <div class="col2">
-          <div class="hl">
-            <div style="font-size:var(--t-label);font-weight:700;color:var(--c-teal);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;">Modo por Niveles</div>
-            <p>Hasta 9 mensajes en 3 niveles. Ideal para primeros pasos de causa-efecto.</p>
-          </div>
-          <div class="hl azul">
-            <div style="font-size:var(--t-label);font-weight:700;color:var(--c-medio);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;">Modo Secuencial</div>
-            <p>Hasta 90 segundos totales de grabación. Para secuencias comunicativas.</p>
-          </div>
+        <div class="hl azul rv">
+          <div style="font-size:var(--t-label);font-weight:700;color:var(--c-medio);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;">Modo Secuencial</div>
+          <p>Hasta 90 segundos totales de grabación. Para secuencias comunicativas.</p>
         </div>
       </div>
-      <p class="rv" style="color:var(--c-medio);font-weight:600;">Desde primeros pasos de causa-efecto hasta secuencias comunicativas.</p>
+      <p class="rv" style="color:var(--c-medio);font-weight:600;margin-top:calc(var(--gap)*0.3);">Desde primeros pasos de causa-efecto hasta secuencias comunicativas.</p>
+    </div>
+    <!-- Derecha: foto grande del disCom -->
+    <div class="pnl" style="background:var(--c-gris);padding:0;width:clamp(320px,62vw,760px);">
+      <img src="assets/img/discom.jpg" alt="disCom lvls+" style="width:100%;height:100%;object-fit:contain;padding:clamp(0.5rem,1.5vw,1.2rem);">
     </div>
   </div>
 </section>
@@ -933,15 +995,8 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
         <a href="https://wa.me/5493512926315?text=Hola!%20Me%20contacto%20por%20asesoramiento%20sobre%20la%20valija%20Equipar%20para%20Equipar.%20Mi%20nombre%20es" target="_blank" class="supp-item"><div class="supp-icon">💬</div><div class="supp-ttl">Contacto directo</div><div class="supp-txt">Escribinos por asesoramiento.</div></a>
       </div>
     </div>
-    <div class="pnl" style="align-items:center;justify-content:center;gap:0.7rem;">
-      <div class="glow"></div>
-      <div style="position:relative;z-index:1;text-align:center;">
-        <div class="qr-wrap" id="qr37"></div>
-        <div class="qr-note" style="color:rgba(255,255,255,0.3);">Escaneá para acceder</div>
-      </div>
-    </div>
   </div>
-  <!-- SPEAKER NOTE: "No necesitan tomar notas. Todo está en ese QR." -->
+  <!-- SPEAKER NOTE: "No necesitan tomar notas. Todo está en ese QR de la slide 1." -->
 </section>
 
 <!-- ============================================================
@@ -1051,17 +1106,18 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
   <div class="sb">
     <div class="cnt" style="align-items:center;">
       <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">La oportunidad</span>
-      <h2 class="rv" style="text-align:center;">El circuito completo</h2>
+      <h2 class="rv" style="text-align:center;">Naturalicemos el uso de Tecnología Asistiva</h2>
       <div class="divider rv" style="align-self:center;"></div>
       <div class="flow rv" style="margin-top:calc(var(--gap)*0.5);">
-        <div class="fn"><div class="fi">🧳</div><div class="fl">Valija EpE</div></div><div class="fa">→</div>
         <div class="fn"><div class="fi">🔍</div><div class="fl">Evaluación</div></div><div class="fa">→</div>
+        <div class="fn"><div class="fi">🧳</div><div class="fl">Prueba con valija EpE</div></div><div class="fa">→</div>
+        <div class="fn"><div class="fi">⚙️</div><div class="fl">Selección de características</div></div><div class="fa">→</div>
         <div class="fn"><div class="fi">✅</div><div class="fl">Indicación</div></div><div class="fa">→</div>
-        <div class="fn"><div class="fi">🏛️</div><div class="fl">AcceDer</div></div><div class="fa">→</div>
         <div class="fn hl"><div class="fi">🙌</div><div class="fl">Acceso</div></div>
       </div>
+      <p class="rv" style="text-align:center;color:var(--c-texto);font-weight:500;margin-top:var(--gap);max-width:60ch;align-self:center;">Evaluaciones con más herramientas potencian las capacidades de la institución y sus profesionales y permiten indicar mejor.<br>Eso implica mejores abordajes a pacientes y familias.</p>
       <div class="hl center rv" style="margin-top:var(--gap);">
-        <p style="font-size:var(--t-h3);font-weight:700;color:var(--c-marino);">No es un conjunto de productos. Es un <span class="accent">sistema</span>.</p>
+        <p style="font-size:var(--t-h3);font-weight:700;color:var(--c-marino);">No es un conjunto de productos. Es un sistema.<br><span class="accent">Es una herramienta de evaluación.</span></p>
       </div>
     </div>
   </div>
@@ -1076,15 +1132,15 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
       <div class="g3 rv" style="margin-top:calc(var(--gap)*0.5);">
         <div class="opp" style="border-top:3px solid var(--c-teal);">
           <div class="opp-icon">🏥</div><div class="opp-ttl">Para instituciones</div>
-          <ul><li>Diferenciación real</li><li>Evaluación de precisión</li><li>Canal de financiamiento</li></ul>
+          <ul><li>Más prestaciones.</li><li>Mejores y más rápidos resultados.</li><li>Diferenciación.</li></ul>
         </div>
         <div class="opp" style="border-top:3px solid var(--c-medio);">
           <div class="opp-icon">👩‍⚕️</div><div class="opp-ttl">Para profesionales</div>
-          <ul><li>Red de referentes</li><li>Encuentro de actualización</li><li>Acompañamiento técnico y clínico</li></ul>
+          <ul><li>Más recursos para las sesiones.</li><li>Abordajes personalizados de forma simple.</li><li>Red de asesoramiento.</li></ul>
         </div>
         <div class="opp" style="border-top:3px solid var(--c-marino);">
-          <div class="opp-icon">🏛️</div><div class="opp-ttl">Para el gobierno</div>
-          <ul><li>Sistema escalable</li><li>Nodos provinciales</li><li>Crecimiento acompañado</li></ul>
+          <div class="opp-icon">🏛️</div><div class="opp-ttl">Para la provincia</div>
+          <ul><li>Sistema escalable.</li><li>Innovación en el abordaje de la discapacidad.</li><li>Potencia la industria local.</li></ul>
         </div>
       </div>
     </div>
@@ -1196,6 +1252,8 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
         e.target.classList.add('visible');
         const idx = slides.indexOf(e.target);
         if (idx !== -1) updateUI(idx);
+        // reanudar videos con autoplay (ej: video de fondo)
+        e.target.querySelectorAll('video[autoplay]').forEach(v => { v.play().catch(()=>{}); });
       } else {
         e.target.querySelectorAll('video').forEach(v => { v.pause(); });
       }
@@ -1205,12 +1263,20 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
   slides.forEach(s => io.observe(s));
 
   /* --- Update counter, progress bar, nav pills --- */
+  const mobileNavItems = document.querySelectorAll('.mn-item');
   function updateUI(idx) {
     current = idx;
     curEl.textContent = idx + 1;
     bar.style.width = (idx / Math.max(total - 1, 1) * 100) + '%';
-    const sec = slides[idx].dataset.s;
-    navItems.forEach(n => n.classList.toggle('active', n.dataset.s === sec));
+    const currentN = parseInt(slides[idx].dataset.n);
+    // La pill activa es la de mayor data-n que sea <= slide actual
+    let bestN = -1;
+    navItems.forEach(n => {
+      const pN = parseInt(n.dataset.n);
+      if (pN <= currentN && pN > bestN) bestN = pN;
+    });
+    navItems.forEach(n => n.classList.toggle('active', parseInt(n.dataset.n) === bestN));
+    mobileNavItems.forEach(n => n.classList.toggle('active', parseInt(n.dataset.n) === bestN));
   }
 
   /* --- Navigate to slide (solo desktop con scroll-snap) --- */
@@ -1218,6 +1284,34 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     idx = Math.max(0, Math.min(total - 1, idx));
     slides[idx].scrollIntoView({ behavior: 'smooth' });
   }
+
+  /* --- Nav pills: click → slide por data-n --- */
+  function goToN(n) {
+    const target = slides.find(s => parseInt(s.dataset.n) === n);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  }
+  navItems.forEach(n => {
+    n.addEventListener('click', () => goToN(parseInt(n.dataset.n)));
+  });
+
+  /* --- Burger / side drawer (mobile) --- */
+  const burgerBtn      = document.getElementById('burgerBtn');
+  const mobileNav      = document.getElementById('mobileNav');
+  const mobileNavClose = document.getElementById('mobileNavClose');
+  const mnBackdrop     = document.getElementById('mnBackdrop');
+
+  function openDrawer()  { mobileNav.classList.add('open'); mnBackdrop.classList.add('open'); }
+  function closeDrawer() { mobileNav.classList.remove('open'); mnBackdrop.classList.remove('open'); }
+
+  burgerBtn.addEventListener('click', openDrawer);
+  mobileNavClose.addEventListener('click', closeDrawer);
+  mnBackdrop.addEventListener('click', closeDrawer);
+  mobileNavItems.forEach(n => {
+    n.addEventListener('click', () => {
+      closeDrawer();
+      setTimeout(() => goToN(parseInt(n.dataset.n)), 200);
+    });
+  });
 
   /* --- Keyboard (desktop y mobile con teclado físico) --- */
   document.addEventListener('keydown', e => {
