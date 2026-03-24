@@ -193,6 +193,9 @@ h2{font-size:var(--t-h2);font-weight:800;line-height:1;letter-spacing:-0.02em;co
 h3{font-size:var(--t-h3);font-weight:700;color:var(--c-marino);}
 p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 .accent{color:var(--c-teal);}
+.portada-title{white-space:nowrap;font-size:clamp(1.6rem,4vw,3.6rem);}
+.portada-sub{white-space:nowrap;}
+@media(max-width:768px){.portada-title{white-space:normal;}.portada-sub{white-space:normal;}}
 .w{color:#fff!important;}
 .dim{color:rgba(255,255,255,0.55);}
 .divider{width:clamp(2rem,4vw,3.5rem);height:3px;background:var(--c-teal);border-radius:2px;flex-shrink:0;}
@@ -339,6 +342,7 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 .btn-t{background:var(--c-teal);color:#fff;}
 .btn-d{background:var(--c-marino);color:#fff;}
 .btn-wa{background:#25D366;color:#fff;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;max-width:720px;width:100%;margin:0 auto;}
 
 /* Logo box — contenedor del PNG del logo en todas las slides
    Limita el ancho al espacio disponible para que no desborde en mobile */
@@ -410,6 +414,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
   /* nav de secciones se oculta, aparece burger */
   .s-nav { display: none; }
   .burger-btn { display: block; }
+  .contact-grid { grid-template-columns: 1fr; max-width: 100%; }
 
   /* layouts de 2 columnas → 1 columna */
   .col2, .g2 { grid-template-columns: 1fr; }
@@ -602,20 +607,24 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
 <!-- ============================================================
      SLIDE 0 — PORTADA
      ============================================================ -->
-<section class="slide dark" data-s="portada" data-n="1">
-  <div class="sb">
+<section class="slide dark" data-s="portada" data-n="1" style="position:relative;overflow:hidden;">
+  <!-- Video de fondo -->
+  <video autoplay muted loop playsinline id="vid-portada" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+    <source src="assets/video/VIDEO_VALIJA.mp4" type="video/mp4">
+  </video>
+  <!-- Overlay oscuro — suficiente para leer, suficiente para ver el video -->
+  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(10,16,28,0.88);z-index:1;"></div>
+  <!-- Contenido encima -->
+  <div class="sb" style="position:relative;z-index:2;">
     <div class="cnt" style="border-right:1px solid rgba(255,255,255,0.07);">
-      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;width:fit-content;">
-        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;display:block;">
-      </div>
-      <h1 class="rv w" style="margin-top:var(--gap);">Equipar<br>para<br><span class="accent">Equipar</span></h1>
-      <p class="rv dim" style="max-width:36ch;">Tecnología Asistiva para instituciones de rehabilitación de la Provincia de Córdoba</p>
+      <h1 class="rv w portada-title">Valijas Equipar para <span class="accent">Equipar</span></h1>
+      <p class="rv dim portada-sub">Una herramienta creada para agilizar el proceso de equipamiento en Tecnología Asistiva.</p>
       <div class="rv" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.3rem;">
         <span class="tag tag-w">Gobierno de Córdoba</span>
         <span class="tag tag-w">Marzo 2026</span>
       </div>
     </div>
-    <div class="pnl" style="width:clamp(240px,35vw,420px);">
+    <div class="pnl" style="width:clamp(240px,35vw,420px);background:transparent;border-left:1px solid rgba(255,255,255,0.07);">
       <div class="glow"></div>
       <div class="rv-sc" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:0.8rem;text-align:center;">
         <p style="font-size:var(--t-body);color:rgba(255,255,255,0.65);max-width:22ch;line-height:1.5;">Escaneá el QR para acceder al material.</p>
@@ -1143,63 +1152,93 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
           <ul><li>Sistema escalable.</li><li>Innovación en el abordaje de la discapacidad.</li><li>Potencia la industria local.</li></ul>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="slide" data-s="cierre" data-n="23">
-  <div class="sb">
-    <div class="cnt" style="justify-content:center;gap:clamp(1rem,2vh,2rem);">
-      <h2 class="rv">¿Qué hacemos ahora?</h2>
-      <div class="col2 rv" style="align-items:start;gap:clamp(2rem,5vw,6rem);">
-        <div style="display:flex;flex-direction:column;gap:var(--gap);">
-          <div class="hl" style="display:flex;align-items:flex-start;gap:0.8rem;">
-            <span style="font-size:1.5em;font-weight:800;color:var(--c-teal);flex-shrink:0;line-height:1.2;">1</span>
-            <p>Escaneá el QR → presentación completa, manuales y configurador</p>
-          </div>
-          <div class="hl" style="display:flex;align-items:flex-start;gap:0.8rem;">
-            <span style="font-size:1.5em;font-weight:800;color:var(--c-teal);flex-shrink:0;line-height:1.2;">2</span>
-            <div style="display:flex;flex-direction:column;gap:0.4rem;">
-              <p>Anotate al encuentro de actualización</p>
-              <a href="inscripcion.html" target="_blank"
-                 style="display:inline-flex;align-items:center;gap:0.4rem;background:var(--c-teal);color:#fff;font-weight:700;font-size:clamp(0.75rem,1.2vw,0.95rem);padding:0.45em 1em;border-radius:6px;text-decoration:none;width:fit-content;">
-                ✏️ Anotarme al encuentro →
-              </a>
-            </div>
-          </div>
-          <div class="hl" style="display:flex;align-items:flex-start;gap:0.8rem;">
-            <span style="font-size:1.5em;font-weight:800;color:var(--c-teal);flex-shrink:0;line-height:1.2;">3</span>
-            <p>Hablenos hoy → estamos acá</p>
-          </div>
-          <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.3rem;">
-            <a href="https://wa.me/5493512926315" target="_blank" class="btn btn-wa">💬 Escribinos</a>
-            <a href="https://dismascapacidad.com.ar" target="_blank" class="btn btn-d">🛒 Tienda</a>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;">
-          <div class="qr-wrap" id="qr53"></div>
-          <div class="qr-note">Escaneá con tu celular</div>
+      <!-- Card destacada: impacto en personas -->
+      <div class="rv" style="margin-top:calc(var(--gap)*0.6);display:flex;justify-content:center;">
+        <div style="background:linear-gradient(135deg,var(--c-marino) 0%,#1a3a5c 100%);border-radius:14px;padding:clamp(1.8rem,4vw,3rem) clamp(1.8rem,4vw,3.2rem);max-width:58%;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0.55rem;text-align:center;">
+          <span style="display:block;font-size:clamp(0.78rem,1.2vw,0.95rem);font-weight:500;color:rgba(255,255,255,0.8);line-height:1.65;">Detrás de cada institución mejor equipada, cada profesional mejor formado, y cada intervención más personalizada</span>
+          <span style="display:block;font-size:clamp(1rem,1.85vw,1.4rem);font-weight:700;color:var(--c-teal);line-height:1.45;">hay una persona a la que le permitimos o facilitamos comunicarse, moverse,</span>
+          <span style="display:block;font-size:clamp(1.25rem,2.5vw,1.9rem);font-weight:800;color:#fff;letter-spacing:-0.01em;line-height:1.25;">e interactuar con el mundo y con los demás.</span>
         </div>
       </div>
     </div>
   </div>
-  <!-- SPEAKER NOTE: La slide más simple. Dejar proyectada durante preguntas. -->
+</section>
+
+<section class="slide dark" data-s="cierre" data-n="23" style="background:var(--c-marino);">
+  <div class="sb" style="background:var(--c-marino);">
+    <div class="cnt">
+      <h2 class="rv w" style="font-size:var(--t-h1);">Hablemos.</h2>
+      <p class="rv dim" style="max-width:36ch;">Estamos para trabajar en conjunto.</p>
+      <div class="contact-grid rv" style="margin-top:calc(var(--gap)*0.6);">
+        <!-- WhatsApp -->
+        <a href="https://wa.me/5493512926315?text=Hola!%20Me%20contacto%20por%20la%20valija%20Equipar%20para%20Equipar." target="_blank"
+           style="display:flex;align-items:center;gap:0.7rem;background:rgba(37,211,102,0.15);border:1.5px solid rgba(37,211,102,0.45);border-radius:9px;padding:0.65rem 0.9rem;text-decoration:none;transition:background 0.18s,border-color 0.18s;">
+          <span style="font-size:1.15em;flex-shrink:0;">💬</span>
+          <span style="font-size:var(--t-body);font-weight:700;color:#fff;flex:1;">Escribinos por WhatsApp</span>
+          <span style="color:rgba(255,255,255,0.35);font-size:0.9em;">→</span>
+        </a>
+        <!-- Instagram -->
+        <a href="https://instagram.com/dismascapacidad" target="_blank"
+           style="display:flex;align-items:center;gap:0.7rem;background:rgba(225,48,108,0.12);border:1.5px solid rgba(225,48,108,0.38);border-radius:9px;padding:0.65rem 0.9rem;text-decoration:none;transition:background 0.18s,border-color 0.18s;">
+          <span style="font-size:1.15em;flex-shrink:0;">📸</span>
+          <span style="font-size:var(--t-body);font-weight:700;color:#fff;flex:1;">Seguinos en Instagram</span>
+          <span style="color:rgba(255,255,255,0.35);font-size:0.9em;">→</span>
+        </a>
+        <!-- Email -->
+        <a href="mailto:dismascapacidad@gmail.com"
+           style="display:flex;align-items:center;gap:0.7rem;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.18);border-radius:9px;padding:0.65rem 0.9rem;text-decoration:none;transition:background 0.18s,border-color 0.18s;">
+          <span style="font-size:1.15em;flex-shrink:0;">✉️</span>
+          <span style="font-size:var(--t-body);font-weight:700;color:#fff;flex:1;">Correo electrónico</span>
+          <span style="color:rgba(255,255,255,0.35);font-size:0.9em;">→</span>
+        </a>
+        <!-- Formulario -->
+        <a href="inscripcion.html" target="_blank"
+           style="display:flex;align-items:center;gap:0.7rem;background:rgba(25,146,139,0.18);border:1.5px solid rgba(25,146,139,0.45);border-radius:9px;padding:0.65rem 0.9rem;text-decoration:none;transition:background 0.18s,border-color 0.18s;">
+          <span style="font-size:1.15em;flex-shrink:0;">📋</span>
+          <span style="font-size:var(--t-body);font-weight:700;color:#fff;flex:1;">Completá el formulario</span>
+          <span style="color:rgba(255,255,255,0.35);font-size:0.9em;">→</span>
+        </a>
+        <!-- LinkedIn Gonzalo -->
+        <a href="https://linkedin.com/in/gonzalo-nanzer" target="_blank"
+           style="display:flex;align-items:center;gap:0.7rem;background:rgba(10,102,194,0.15);border:1.5px solid rgba(10,102,194,0.38);border-radius:9px;padding:0.65rem 0.9rem;text-decoration:none;transition:background 0.18s,border-color 0.18s;">
+          <span style="font-size:1.15em;flex-shrink:0;">💼</span>
+          <span style="font-size:var(--t-body);font-weight:700;color:#fff;flex:1;">LinkedIn Gonzalo Nanzer</span>
+          <span style="color:rgba(255,255,255,0.35);font-size:0.9em;">→</span>
+        </a>
+        <!-- LinkedIn Belén -->
+        <a href="https://linkedin.com/in/belénhidalgo" target="_blank"
+           style="display:flex;align-items:center;gap:0.7rem;background:rgba(10,102,194,0.15);border:1.5px solid rgba(10,102,194,0.38);border-radius:9px;padding:0.65rem 0.9rem;text-decoration:none;transition:background 0.18s,border-color 0.18s;">
+          <span style="font-size:1.15em;flex-shrink:0;">💼</span>
+          <span style="font-size:var(--t-body);font-weight:700;color:#fff;flex:1;">LinkedIn Belén Hidalgo</span>
+          <span style="color:rgba(255,255,255,0.35);font-size:0.9em;">→</span>
+        </a>
+        <!-- Web -->
+        <a href="https://dismascapacidad.com.ar" target="_blank"
+           style="display:flex;align-items:center;gap:0.7rem;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.18);border-radius:9px;padding:0.65rem 0.9rem;text-decoration:none;transition:background 0.18s,border-color 0.18s;grid-column:1/-1;">
+          <span style="font-size:1.15em;flex-shrink:0;">🌐</span>
+          <span style="font-size:var(--t-body);font-weight:700;color:#fff;flex:1;">Visitá nuestra web</span>
+          <span style="color:rgba(255,255,255,0.35);font-size:0.9em;">dismascapacidad.com.ar →</span>
+        </a>
+      </div>
+    </div>
+    <!-- Panel derecho: QR del formulario -->
+    <div class="pnl" style="align-items:center;justify-content:center;gap:0.8rem;">
+      <div class="glow"></div>
+      <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:0.7rem;text-align:center;">
+        <p style="font-size:var(--t-body);color:rgba(255,255,255,0.55);max-width:18ch;line-height:1.5;">Escaneá para acceder al formulario de registro</p>
+        <div class="qr-wrap" id="qr53"></div>
+        <div class="qr-note" style="color:rgba(255,255,255,0.25);">inscripcion.html</div>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: Dejar proyectada durante preguntas y el cierre. -->
 </section>
 
 <section class="slide dark" data-s="cierre" data-n="24">
   <div class="sb" style="background:var(--c-marino);">
-    <div class="cnt" style="align-items:center;text-align:center;justify-content:center;gap:var(--gap);">
-      <div class="rv" style="background:#fff;border-radius:10px;padding:0.7rem 1.4rem;width:fit-content;">
-        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(36px,7vh,64px);width:auto;display:block;">
-      </div>
-      <div class="divider rv" style="align-self:center;"></div>
-      <div class="quote rv" style="max-width:52ch;padding-left:1.5rem;color:rgba(255,255,255,0.82);">Dismascapacidad existe porque creemos que la tecnología asistiva funciona cuando llega bien acompañada.</div>
-      <p class="rv" style="font-size:var(--t-small);color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;">Gonzalo Nanzer · dis+capacidad</p>
-      <div class="rv" style="width:2rem;height:1px;background:rgba(255,255,255,0.1);margin:0.3rem auto;"></div>
-      <p class="rv" style="font-size:var(--t-h3);font-weight:500;color:rgba(255,255,255,0.45);font-style:italic;max-width:44ch;">[Frase de cierre de Belén]</p>
-      <div class="rv" style="margin-top:var(--gap);display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;font-size:var(--t-small);color:rgba(255,255,255,0.2);">
-        <span>dismascapacidad.com.ar</span>
-        <span>wa.me/5493512926315</span>
+    <div class="cnt" style="align-items:center;text-align:center;justify-content:center;">
+      <div class="rv" style="background:#fff;border-radius:12px;padding:clamp(1rem,2.5vw,2rem) clamp(1.5rem,4vw,3.5rem);width:fit-content;">
+        <img src="assets/img/logo_dis.png" alt="dis+capacidad" style="height:clamp(48px,10vh,96px);width:auto;display:block;">
       </div>
     </div>
   </div>
@@ -1252,8 +1291,11 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
         e.target.classList.add('visible');
         const idx = slides.indexOf(e.target);
         if (idx !== -1) updateUI(idx);
-        // reanudar videos con autoplay (ej: video de fondo)
-        e.target.querySelectorAll('video[autoplay]').forEach(v => { v.play().catch(()=>{}); });
+        // reanudar videos con autoplay (ej: video de fondo) y aplicar velocidad lenta
+        e.target.querySelectorAll('video[autoplay]').forEach(v => {
+          v.playbackRate = 0.4;
+          v.play().catch(()=>{});
+        });
       } else {
         e.target.querySelectorAll('video').forEach(v => { v.pause(); });
       }
