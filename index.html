@@ -407,18 +407,23 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     min-height: 100dvh;
     overflow: visible;
   }
-  /* slides con video de fondo: clase explícita, sin :has() */
+  /* slides con video de fondo: el video es position:absolute y cubre el slide
+     independientemente del padding — NO tocamos el padding para que el
+     contenido (.sb) quede debajo del header fijo */
   .has-bg-video {
     height: 100dvh !important;
     overflow: hidden !important;
-    padding: 0 !important;
   }
   /* video de fondo: forzar alto explícito para que object-fit:cover funcione */
   .has-bg-video > video {
+    position: absolute !important;
+    top: 0 !important; left: 0 !important;
+    width: 100% !important;
     height: 100dvh !important;
-    min-height: 100dvh !important;
+    object-fit: cover !important;
   }
-  /* caso clínico slides: sin padding, full-height igual que has-bg-video */
+  /* caso clínico slides: padding:0 para que .caso-wrap llene los 100dvh
+     sin el offset del header */
   .has-caso-video {
     padding: 0 !important;
     height: 100dvh !important;
@@ -427,6 +432,10 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
   /* con padre de altura definida, height:100% resuelve correctamente */
   .has-caso-video .caso-wrap {
     height: 100%;
+  }
+  /* la overlay de info debe aparecer ENCIMA del video */
+  .has-caso-video .caso-info {
+    z-index: 2;
   }
   .sb  { overflow: visible; flex-direction: column; }
   .cnt { overflow: visible; }
