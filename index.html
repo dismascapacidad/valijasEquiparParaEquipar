@@ -444,8 +444,9 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
   .sb  { overflow: visible; flex-direction: column; }
   .cnt { overflow: visible; }
 
-  /* panel lateral derecho se oculta */
+  /* panel lateral derecho se oculta (excepto cuando tiene imagen de producto) */
   .pnl { display: none; }
+  .pnl.pnl-caa { display:block !important; width:100% !important; height:auto !important; min-height:200px; max-height:45vw; }
 
   /* nav de secciones se oculta, aparece burger */
   .s-nav { display: none; }
@@ -1003,7 +1004,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
       <p class="rv" style="color:var(--c-medio);font-weight:600;margin-top:calc(var(--gap)*0.3);">Desde primeros pasos de causa-efecto hasta secuencias comunicativas.</p>
     </div>
     <!-- Derecha: foto grande del disCom -->
-    <div class="pnl" style="background:var(--c-gris);padding:0;width:clamp(320px,62vw,760px);">
+    <div class="pnl pnl-caa" style="background:var(--c-gris);padding:0;width:clamp(320px,62vw,760px);">
       <img src="assets/img/discom.jpg" alt="disCom lvls+" style="width:100%;height:100%;object-fit:contain;padding:clamp(0.5rem,1.5vw,1.2rem);">
     </div>
   </div>
@@ -1426,6 +1427,33 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     v.playbackRate = 0.4;
     v.play().catch(() => {});
   });
+
+  /* --- Fix bg-video cover on mobile: usar píxeles exactos del viewport --- */
+  if (window.matchMedia('(max-width:768px)').matches) {
+    const applyBgVideoFix = () => {
+      const w = window.innerWidth, h = window.innerHeight;
+      document.querySelectorAll('.has-bg-video').forEach(s => {
+        s.style.height = h + 'px';
+        const v = s.querySelector('video');
+        if (v) {
+          v.style.position   = 'absolute';
+          v.style.top        = '0';
+          v.style.left       = '0';
+          v.style.width      = w + 'px';
+          v.style.height     = h + 'px';
+          v.style.objectFit  = 'cover';
+          v.style.zIndex     = '0';
+          v.style.transform  = 'translateZ(0)';
+        }
+        // Fix overlay divs to full height
+        s.querySelectorAll(':scope > [style*="z-index:1"]').forEach(ov => {
+          ov.style.height = h + 'px';
+        });
+      });
+    };
+    applyBgVideoFix();
+    window.addEventListener('resize', applyBgVideoFix);
+  }
 
   /* --- Video overlays: hide play button when video has a source --- */
   document.querySelectorAll('.vid-ph').forEach(ph => {
