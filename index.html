@@ -553,10 +553,10 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     </div>
     <div class="pnl" style="width:clamp(240px,35vw,420px);">
       <div class="glow"></div>
-      <div class="rv-sc" style="text-align:center;position:relative;z-index:1;">
-        <div style="font-size:var(--t-display);font-weight:800;color:var(--c-teal);letter-spacing:-0.05em;line-height:1;">20</div>
-        <div style="font-size:var(--t-h3);font-weight:700;color:#fff;margin-top:0.4rem;">Instituciones</div>
-        <div style="font-size:var(--t-body);color:rgba(255,255,255,0.35);margin-top:0.3rem;">equipadas para equipar.</div>
+      <div class="rv-sc" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:0.8rem;text-align:center;">
+        <p style="font-size:var(--t-body);color:rgba(255,255,255,0.65);max-width:22ch;line-height:1.5;">Escaneá y registrá tu institución antes de continuar</p>
+        <div class="qr-wrap" id="qr-form"></div>
+        <div class="qr-note" style="color:rgba(255,255,255,0.3);">Formulario de registro</div>
       </div>
     </div>
   </div>
@@ -578,7 +578,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     <div class="pnl">
       <div class="glow"></div>
       <div class="rv-sc" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:0.8rem;">
-        <img src="assets/img/cordoba-state-map-in-form-argentina-country-state-vector.jpg" alt="Mapa de Córdoba" style="width:clamp(150px,22vw,260px);height:auto;filter:drop-shadow(0 6px 24px rgba(25,146,139,0.5));opacity:0.9;">
+        <img src="assets/img/cordoba-state-map-in-form-argentina-country-state-vector.jpg" alt="Mapa de Córdoba" style="width:clamp(150px,22vw,260px);height:auto;filter:drop-shadow(0 6px 24px rgba(25,146,139,0.5));opacity:0.9;border-radius:10px;">
         <span style="font-size:var(--t-small);color:rgba(255,255,255,0.5);letter-spacing:0.12em;text-transform:uppercase;">Provincia de Córdoba</span>
       </div>
     </div>
@@ -635,7 +635,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
           <!-- Fila 1 -->
           <div style="background:#2C6890;color:#fff;border-radius:10px;padding:0.75rem 0.6rem;font-size:var(--t-body);font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;min-height:5rem;line-height:1.35;">Evaluación Inicial</div>
           <div style="text-align:center;font-size:1.4em;color:#888;">→</div>
-          <div style="background:#19928B;color:#fff;border-radius:10px;padding:0.75rem 0.6rem;font-size:var(--t-body);font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;min-height:5rem;line-height:1.35;">Selección del equipamiento adecuado</div>
+          <div style="background:#19928B;color:#fff;border-radius:10px;padding:0.75rem 0.6rem;font-size:var(--t-body);font-weight:700;text-align:center;display:flex;align-items:center;justify-content:center;min-height:5rem;line-height:1.35;border:2.5px solid #e07830;">Selección del equipamiento adecuado</div>
           <!-- Fila 2: flechas laterales -->
           <div style="text-align:center;font-size:1.4em;color:#888;">↑</div>
           <div></div>
@@ -661,13 +661,17 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
       <h2 class="rv" style="text-align:center;">El circuito Equipar para Equipar</h2>
       <div class="divider rv" style="align-self:center;"></div>
       <div class="flow rv" style="margin-top:calc(var(--gap)*0.5);">
-        <div class="fn"><div class="fi">🧳</div><div class="fl">Valija EpE</div></div><div class="fa">→</div>
         <div class="fn"><div class="fi">🔍</div><div class="fl">Evaluación</div></div><div class="fa">→</div>
+        <div class="fn"><div class="fi">🧳</div><div class="fl">Prueba con valija EpE</div></div><div class="fa">→</div>
+        <div class="fn"><div class="fi">⚙️</div><div class="fl">Selección de características</div></div><div class="fa">→</div>
         <div class="fn"><div class="fi">✅</div><div class="fl">Indicación</div></div><div class="fa">→</div>
-        <div class="fn"><div class="fi">🏛️</div><div class="fl">AcceDer</div></div><div class="fa">→</div>
         <div class="fn hl"><div class="fi">🙌</div><div class="fl">Acceso</div></div>
       </div>
-      <p class="rv" style="text-align:center;color:var(--c-medio);font-weight:600;margin-top:var(--gap);">La institución se diferencia — el paciente accede.</p>
+      <p class="rv" style="text-align:center;color:var(--c-texto);font-weight:500;margin-top:var(--gap);max-width:60ch;align-self:center;">Evaluaciones con más herramientas potencian las capacidades de la institución y sus profesionales y permiten indicar mejor. Eso implica mejores abordajes a pacientes y familias.</p>
+      <div class="rv" style="margin-top:calc(var(--gap)*0.6);background:rgba(25,146,139,0.07);border-left:3px solid var(--c-teal);border-radius:0 8px 8px 0;padding:0.75rem 1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;width:100%;">
+        <p style="flex:1;min-width:20ch;font-size:var(--t-body);color:var(--c-texto);line-height:1.5;">Conocé el programa AcceDer: Recursos para ofrecer oportunidades de accesibilidad para personas con discapacidad y sus entornos.</p>
+        <a href="https://drive.google.com/drive/folders/1oW-B7zFBAsbbQ_aeGFLi0NIRS2limb17" target="_blank" style="display:inline-block;background:var(--c-teal);color:#fff;font-weight:700;font-size:var(--t-body);padding:0.55rem 1.1rem;border-radius:8px;text-decoration:none;white-space:nowrap;transition:background 0.15s;">Conocer más</a>
+      </div>
     </div>
   </div>
   <!-- SPEAKER NOTE: Este diagrama vuelve en el Bloque 5 con todo el peso de la presentación encima. Es una promesa que se cumple. -->
@@ -677,6 +681,30 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
      BLOQUE 2 — QUIÉNES SOMOS
      ============================================================ -->
 <section class="slide" data-s="quienes" data-n="6">
+  <div class="sb">
+    <div class="cnt">
+      <span class="eyebrow azul rv">Equipar para Equipar</span>
+      <h2 class="rv">No solo el usuario final: <br> Trabajamos pensando en todos los actores que forman parte del proceso rehabilitador.</h2>
+      <div class="divider rv"></div>
+      <div class="col2 rv">
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="font-size:var(--t-label);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#bbb;">Antes</div>
+          <p style="font-size:var(--t-body);color:var(--c-texto);line-height:1.6;">El paciente debía adaptarse a las prestaciones y características del equipamiento disponible. Los profesionales veían limitada su capacidad de evaluación por la disponibilidad de equipamiento.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="font-size:var(--t-label);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--c-teal);">Ahora</div>
+          <p style="font-size:var(--t-body);color:var(--c-texto);line-height:1.6;">Instituciones y profesionales cuentan con herramientas de trabajo versátiles, adaptables a cualquier situación.</p>
+        </div>
+      </div>
+      <div class="hl rv">
+        <p style="font-size:var(--t-h3);font-weight:700;color:var(--c-marino);">No es un kit de productos.<br>Es una <span class="accent">metodología de evaluación</span>.</p>
+      </div>
+    </div>
+  </div>
+  <!-- SPEAKER NOTE: EpE nació de preguntarse qué necesita el profesional, no solo el paciente. -->
+</section>
+
+<section class="slide" data-s="quienes" data-n="7">
   <div class="sb">
     <div class="cnt">
       <span class="eyebrow azul rv">Quiénes somos</span>
@@ -704,30 +732,6 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     </div>
   </div>
   <!-- SPEAKER NOTE: Contar el origen desde la tensión ingeniero/terapeuta. No leer la slide. -->
-</section>
-
-<section class="slide" data-s="quienes" data-n="7">
-  <div class="sb">
-    <div class="cnt">
-      <span class="eyebrow azul rv">Equipar para Equipar</span>
-      <h2 class="rv">No solo el usuario final: <br> Trabajamos pensando en todos los actores que forman parte del proceso rehabilitador.</h2>
-      <div class="divider rv"></div>
-      <div class="col2 rv">
-        <div style="display:flex;flex-direction:column;gap:0.6rem;">
-          <div style="font-size:var(--t-label);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#bbb;">Antes</div>
-          <p style="font-size:var(--t-body);color:var(--c-texto);line-height:1.6;">El paciente debía adaptarse a las prestaciones y características del equipamiento disponible. Los profesionales veían limitada su capacidad de evaluación por la disponibilidad de equipamiento.</p>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:0.6rem;">
-          <div style="font-size:var(--t-label);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--c-teal);">Ahora</div>
-          <p style="font-size:var(--t-body);color:var(--c-texto);line-height:1.6;">Instituciones y profesionales cuentan con herramientas de trabajo versátiles, adaptables a cualquier situación.</p>
-        </div>
-      </div>
-      <div class="hl rv">
-        <p style="font-size:var(--t-h3);font-weight:700;color:var(--c-marino);">No es un kit de productos.<br>Es una <span class="accent">metodología de evaluación</span>.</p>
-      </div>
-    </div>
-  </div>
-  <!-- SPEAKER NOTE: EpE nació de preguntarse qué necesita el profesional, no solo el paciente. -->
 </section>
 
 <section class="slide" data-s="quienes" data-n="8">
@@ -1314,16 +1318,19 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
   const isLocal = ['localhost','127.0.0.1',''].includes(location.hostname) || location.protocol === 'file:';
   const url     = window.location.href;
 
-  function makeQR(id) {
+  function makeQR(id, customUrl) {
     const el = document.getElementById(id);
     if (!el) return;
+    const target = customUrl || url;
     if (isLocal) {
       el.innerHTML = '<div style="width:200px;height:200px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:0.65rem;color:#aaa;padding:1rem;line-height:1.6;">QR disponible<br>en producción</div>';
       return;
     }
-    new QRCode(el, { text: url, width: 200, height: 200, colorDark: '#101420', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    new QRCode(el, { text: target, width: 200, height: 200, colorDark: '#101420', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
   }
 
+  const baseUrl = window.location.href.replace(/[^/]*$/, '');
+  makeQR('qr-form', baseUrl + 'inscripcion.html');
   makeQR('qr37');
   makeQR('qr53');
 })();
