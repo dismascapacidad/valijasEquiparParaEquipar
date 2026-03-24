@@ -247,13 +247,8 @@
            (formato: https://formspree.io/f/xyzABCDE)
         4. El email de destino se configura dentro de Formspree
       -->
-      <form action="https://formspree.io/f/xbdzenbn" method="POST">
+      <form id="contact-form">
 
-        <!-- Campo oculto para redirigir tras el envío -->
-        <!-- IMPORTANTE: antes del evento, reemplazar con la URL absoluta de producción -->
-        <!-- Ejemplo: value="https://epe-discapacidad.netlify.app/gracias.html"         -->
-        <input type="hidden" name="_next" value="https://valijasequiparparaequipar.netlify.app/gracias">
-        <!-- Asunto del email -->
         <input type="hidden" name="_subject" value="Nueva inscripción — Encuentro dis+capacidad">
 
         <div class="field">
@@ -288,9 +283,47 @@
                     placeholder="Dejanos un comentario."></textarea>
         </div>
 
-        <button type="submit" class="btn-submit">Continuar a la presentación →</button>
+        <div id="form-error" style="display:none;color:#c0392b;font-size:0.85rem;margin-bottom:0.75rem;padding:0.6rem 0.9rem;background:#fdf0ef;border-radius:6px;border-left:3px solid #c0392b;">
+          Hubo un error al enviar. Intentá de nuevo.
+        </div>
+
+        <button type="submit" id="btn-submit" class="btn-submit">Continuar a la presentación →</button>
 
       </form>
+
+      <script>
+        const form = document.getElementById('contact-form');
+        const btn  = document.getElementById('btn-submit');
+        const err  = document.getElementById('form-error');
+
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          err.style.display = 'none';
+          btn.disabled = true;
+          btn.textContent = 'Enviando…';
+
+          const data = new FormData(form);
+
+          try {
+            const res = await fetch('https://formspree.io/f/xbdzenbn', {
+              method: 'POST',
+              body: data,
+              headers: { 'Accept': 'application/json' }
+            });
+
+            if (res.ok) {
+              // Redirigir directamente a la presentación
+              window.location.href = 'index.html';
+            } else {
+              throw new Error('server error');
+            }
+          } catch (_) {
+            err.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'Continuar a la presentación →';
+          }
+        });
+      </script>
     </div>
   </main>
 
