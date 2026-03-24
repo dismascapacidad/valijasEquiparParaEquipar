@@ -261,6 +261,25 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 .vid-ph .play-btn{width:clamp(40px,5vw,60px);height:clamp(40px,5vw,60px);border-radius:50%;border:2px solid var(--c-teal);display:flex;align-items:center;justify-content:center;color:var(--c-teal);font-size:1.3em;position:relative;z-index:1;background:rgba(16,20,32,0.6);}
 .vid-ph .vid-lbl{position:relative;z-index:1;}
 
+/* ── Caso clínico slides ─────────────────────────────── */
+.caso-wrap{display:flex;width:100%;height:100%;overflow:hidden;}
+.caso-info{width:clamp(280px,34%,420px);flex-shrink:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(0.9rem,1.8vh,1.6rem);padding:clamp(1.5rem,4vw,4rem);background:var(--c-fondo);overflow-y:auto;}
+.caso-vid{flex:1;background:#06060f;display:flex;align-items:center;justify-content:center;padding:clamp(1rem,2vw,2.5rem);}
+.caso-vid video{width:100%;height:100%;max-height:85vh;object-fit:contain;border-radius:12px;}
+.caso-label{font-size:var(--t-label);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9aa0b0;margin-bottom:0.3rem;}
+.caso-field{display:flex;flex-direction:column;}
+.caso-field p{margin:0;line-height:1.55;font-size:clamp(0.82rem,1.3vw,1rem);}
+@media(max-width:768px){
+  .caso-wrap{position:relative;flex-direction:column;}
+  .caso-vid{flex:1;padding:0;width:100%;}
+  .caso-vid video{border-radius:0;max-height:none;object-fit:cover;width:100%;height:100%;}
+  .caso-info{position:absolute;bottom:0;left:0;right:0;width:100%;background:linear-gradient(to top,rgba(4,6,18,0.92) 60%,transparent);padding:1.2rem 1.2rem 2rem;gap:0.55rem;}
+  .caso-info .eyebrow{color:rgba(255,255,255,0.55);}
+  .caso-label{color:rgba(255,255,255,0.5);}
+  .caso-field p,.caso-field .tag{color:#fff;font-size:0.88rem;}
+  .caso-hide-mob{display:none;}
+}
+
 /* Flow diagram nodes */
 .flow{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;width:100%;}
 .fn{background:var(--c-teal);color:#fff;border-radius:8px;padding:clamp(0.45rem,1vw,0.9rem) clamp(0.6rem,1.2vw,1.2rem);text-align:center;flex-shrink:0;}
@@ -314,7 +333,8 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 
 /* Support grid */
 .supp{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap);}
-.supp-item{background:var(--c-gris);border-radius:10px;padding:clamp(0.8rem,1.5vw,1.4rem);display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.4rem;}
+.supp-item{background:var(--c-gris);border-radius:10px;padding:clamp(0.8rem,1.5vw,1.4rem);display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.4rem;text-decoration:none;color:inherit;transition:transform 0.15s,box-shadow 0.15s;}
+a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.15);}
 .supp-icon{font-size:clamp(1.3rem,2.5vw,2rem);}
 .supp-ttl{font-size:var(--t-small);font-weight:700;color:var(--c-marino);}
 .supp-txt{font-size:var(--t-label);color:var(--c-texto);line-height:1.4;}
@@ -903,10 +923,10 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
       <span class="eyebrow rv" style="color:rgba(16,20,32,0.4);">Soporte incluido</span>
       <h2 class="rv">Todo sigue disponible<br>cuando lo necesiten</h2>
       <div class="supp rv" style="margin-top:calc(var(--gap)*0.5);">
-        <div class="supp-item"><div class="supp-icon">📄</div><div class="supp-ttl">Manuales digitales</div><div class="supp-txt">Desde el QR de esta presentación</div></div>
-        <div class="supp-item"><div class="supp-icon">⚙️</div><div class="supp-ttl">Configurador online</div><div class="supp-txt">dismascapacidad.netlify.app</div></div>
-        <div class="supp-item"><div class="supp-icon">⬇️</div><div class="supp-ttl">Actualizador de firmware</div><div class="supp-txt">Disponible en la tienda</div></div>
-        <div class="supp-item"><div class="supp-icon">💬</div><div class="supp-ttl">Contacto directo</div><div class="supp-txt">WhatsApp + email</div></div>
+        <a href="https://drive.google.com/drive/folders/1hf8dpmj0vZ9XYzYaMIn4UG-Q-jK3KPHr?usp=sharing" target="_blank" class="supp-item"><div class="supp-icon">📄</div><div class="supp-ttl">Manuales digitales</div><div class="supp-txt">Acá encontrarás manuales y recursos</div></a>
+        <a href="https://dismascapacidad.netlify.app" target="_blank" class="supp-item"><div class="supp-icon">⚙️</div><div class="supp-ttl">Configurador online</div><div class="supp-txt">Configura tus dispositivos y guarda perfiles por usuario</div></a>
+        <a href="https://drive.google.com/drive/folders/1FcM49Z4WJyC5Sy7hlB4slS6cVGFSpWfQ?usp=drive_link" target="_blank" class="supp-item"><div class="supp-icon">⬇️</div><div class="supp-ttl">Actualizador de firmware</div><div class="supp-txt">Descargá el actualizador.</div></a>
+        <a href="https://wa.me/5493512926315?text=Hola!%20Me%20contacto%20por%20asesoramiento%20sobre%20la%20valija%20Equipar%20para%20Equipar.%20Mi%20nombre%20es" target="_blank" class="supp-item"><div class="supp-icon">💬</div><div class="supp-ttl">Contacto directo</div><div class="supp-txt">Escribinos por asesoramiento.</div></a>
       </div>
     </div>
     <div class="pnl" style="align-items:center;justify-content:center;gap:0.7rem;">
@@ -930,88 +950,79 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
       <div class="photo rv" style="width:clamp(90px,16vw,180px);height:clamp(90px,16vw,180px);margin:0 auto;font-size:clamp(1.5rem,3vw,2.5rem);">
         <img src="assets/img/belen_hidalgo.jpg" alt="Belén Hidalgo">
       </div>
-      <h2 class="rv">Sesiones reales.<br>Pacientes reales.<br>Resultados concretos.</h2>
-      <p class="rv" style="color:var(--c-medio);font-weight:600;max-width:38ch;">Evidencia clínica — no marketing.</p>
+      <h2 class="rv">Belén Hidalgo</h2>
+      <p class="rv" style="color:var(--c-medio);font-weight:600;max-width:38ch;">Tecnocinesis (2012)<br>Dpto de Tecnología Asistiva de Neuroability.<br>
+       Evaluaciones internas y externas.<br>Entrenamiento y ajustes con TA.<br>Implementación con equipo y familia. <br>Cursos de formación.</p>
     </div>
   </div>
   <!-- SPEAKER NOTE para Belén: establecer que lo que sigue es evidencia clínica, no marketing. -->
 </section>
 
 <section class="slide" data-s="impacto" data-n="17">
-  <div class="sb">
-    <div class="cnt">
-      <span class="eyebrow rv">Caso clínico 1</span>
-      <div class="col2 rv" style="flex:1;align-items:stretch;margin-top:calc(var(--gap)*0.5);">
-        <div style="display:flex;flex-direction:column;gap:var(--gap);">
-          <div style="font-size:var(--t-h3);font-weight:800;color:var(--c-marino);">Parálisis cerebral · 8 años</div>
-          <div>
-            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Dispositivo utilizado</div>
-            <span class="tag tag-t">disMouse 2.3</span>
-          </div>
-          <div>
-            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Desafío funcional</div>
-            <p>[Descripción del desafío funcional — completar antes del evento]</p>
-          </div>
-        </div>
-        <div class="vid-ph" style="min-height:clamp(140px,25vh,260px);">
-          <video src="assets/video/caso_1.mp4" controls preload="metadata"></video>
-          <div class="play-btn">▶</div>
-          <div class="vid-lbl">caso_1.mp4</div>
-        </div>
+  <div class="caso-wrap">
+    <div class="caso-info rv">
+      <span class="eyebrow">Caso clínico 1</span>
+      <div class="caso-field">
+        <div class="caso-label">Diagnóstico</div>
+        <p>Niño de 11 años, diagnóstico Parálisis Cerebral.</p>
+      </div>
+      <div class="caso-field">
+        <div class="caso-label">Dispositivo utilizado</div>
+        <span class="tag tag-t">disJoystick 4 botones</span>
+      </div>
+      <div class="caso-field caso-hide-mob">
+        <div class="caso-label">Sobre el caso</div>
+        <p>Tetraparesia espástica. Se traslada en silla de ruedas postural asistido por un tercero. Su comunicación actual es mediante gestos, vocalización y utiliza un comunicador en alta tecnología con acceso táctil.</p>
       </div>
     </div>
+    <div class="caso-vid">
+      <video src="assets/video/CASO_1.mp4" controls preload="metadata"></video>
+    </div>
   </div>
-  <!-- SPEAKER NOTE para Belén: contar contexto antes de reproducir. Señalar qué cambió después del video. -->
 </section>
 
 <section class="slide" data-s="impacto" data-n="18">
-  <div class="sb">
-    <div class="cnt">
-      <span class="eyebrow rv">Caso clínico 2</span>
-      <div class="col2 rv" style="flex:1;align-items:stretch;margin-top:calc(var(--gap)*0.5);">
-        <div style="display:flex;flex-direction:column;gap:var(--gap);">
-          <div style="font-size:var(--t-h3);font-weight:800;color:var(--c-marino);">[Diagnóstico · Edad]</div>
-          <div>
-            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Dispositivo utilizado</div>
-            <span class="tag tag-t">[Nombre del dispositivo]</span>
-          </div>
-          <div>
-            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Desafío funcional</div>
-            <p>[Descripción del desafío funcional — completar antes del evento]</p>
-          </div>
-        </div>
-        <div class="vid-ph" style="min-height:clamp(140px,25vh,260px);">
-          <video src="assets/video/caso_2.mp4" controls preload="metadata"></video>
-          <div class="play-btn">▶</div>
-          <div class="vid-lbl">caso_2.mp4</div>
-        </div>
+  <div class="caso-wrap">
+    <div class="caso-info rv">
+      <span class="eyebrow">Caso clínico 2</span>
+      <div class="caso-field">
+        <div class="caso-label">Diagnóstico</div>
+        <p>Niño de 11 años, diagnóstico Parálisis Cerebral.</p>
       </div>
+      <div class="caso-field">
+        <div class="caso-label">Dispositivo utilizado</div>
+        <span class="tag tag-t">disCom lvls · pulsador plug</span>
+      </div>
+      <div class="caso-field caso-hide-mob">
+        <div class="caso-label">Sobre el caso</div>
+        <p>Tetraparesia espástica secuela de hipoxia, asfixia por inmersión. Tono bajo en MMSS, pobre control cefálico. Su comunicación es mediante gestos de agrado y desagrado. Utiliza pulsador para juegos causa-efecto y reproducir mensajes pre-grabados.</p>
+      </div>
+    </div>
+    <div class="caso-vid">
+      <video src="assets/video/CASO_2.mp4" controls preload="metadata"></video>
     </div>
   </div>
 </section>
 
 <section class="slide" data-s="impacto" data-n="19">
-  <div class="sb">
-    <div class="cnt">
-      <span class="eyebrow rv">Caso clínico 3</span>
-      <div class="col2 rv" style="flex:1;align-items:stretch;margin-top:calc(var(--gap)*0.5);">
-        <div style="display:flex;flex-direction:column;gap:var(--gap);">
-          <div style="font-size:var(--t-h3);font-weight:800;color:var(--c-marino);">[Diagnóstico · Edad]</div>
-          <div>
-            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Dispositivo utilizado</div>
-            <span class="tag tag-t">[Nombre del dispositivo]</span>
-          </div>
-          <div>
-            <div style="font-size:var(--t-label);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:0.3rem;">Desafío funcional</div>
-            <p>[Descripción del desafío funcional — completar antes del evento]</p>
-          </div>
-        </div>
-        <div class="vid-ph" style="min-height:clamp(140px,25vh,260px);">
-          <video src="assets/video/caso_3.mp4" controls preload="metadata"></video>
-          <div class="play-btn">▶</div>
-          <div class="vid-lbl">caso_3.mp4</div>
-        </div>
+  <div class="caso-wrap">
+    <div class="caso-info rv">
+      <span class="eyebrow">Caso clínico 3</span>
+      <div class="caso-field">
+        <div class="caso-label">Diagnóstico</div>
+        <p>Niño de 11 años, diagnóstico Parálisis Cerebral.</p>
       </div>
+      <div class="caso-field">
+        <div class="caso-label">Dispositivo utilizado</div>
+        <span class="tag tag-t">Tablet con SAAC · pulsador plug con juguete adaptado</span>
+      </div>
+      <div class="caso-field caso-hide-mob">
+        <div class="caso-label">Sobre el caso</div>
+        <p>Tetraparesia espástica. Se traslada en silla de ruedas postural asistido por un tercero. Su comunicación actual es mediante gestos, vocalización y utiliza un comunicador en alta tecnología con acceso táctil.</p>
+      </div>
+    </div>
+    <div class="caso-vid">
+      <video src="assets/video/CASO_3.mp4" controls preload="metadata"></video>
     </div>
   </div>
 </section>
@@ -1022,8 +1033,8 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
       <div class="photo rv" style="width:clamp(80px,13vw,150px);height:clamp(80px,13vw,150px);margin:0 auto;font-size:clamp(1.3rem,2.5vw,2.2rem);">
         <img src="assets/img/belen_hidalgo.jpg" alt="Belén Hidalgo">
       </div>
-      <div class="quote rv" style="max-width:52ch;padding-left:1.5rem;">[Tu frase sobre lo que cambia cuando la institución tiene la valija disponible]</div>
-      <p class="rv" style="font-size:var(--t-small);color:#aaa;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Belén Hidalgo · Ingeniera Biomédica</p>
+      <div class="quote rv" style="max-width:52ch;padding-left:1.5rem;">La Tecnología Asistiva crea puentes para potenciar la independencia, comunicación y participación de las personas con discapacidad.</div>
+      <p class="rv" style="font-size:var(--t-small);color:#aaa;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Belén Hidalgo</p>
     </div>
   </div>
   <!-- SPEAKER NOTE para Belén: hablar directamente a los profesionales de la sala. -->
@@ -1101,7 +1112,7 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
             <p>Hablenos hoy → estamos acá</p>
           </div>
           <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.3rem;">
-            <a href="https://wa.me/5493513466348" target="_blank" class="btn btn-wa">💬 Escribinos</a>
+            <a href="https://wa.me/5493512926315" target="_blank" class="btn btn-wa">💬 Escribinos</a>
             <a href="https://dismascapacidad.com.ar" target="_blank" class="btn btn-d">🛒 Tienda</a>
           </div>
         </div>
@@ -1128,7 +1139,7 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
       <p class="rv" style="font-size:var(--t-h3);font-weight:500;color:rgba(255,255,255,0.45);font-style:italic;max-width:44ch;">[Frase de cierre de Belén]</p>
       <div class="rv" style="margin-top:var(--gap);display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;font-size:var(--t-small);color:rgba(255,255,255,0.2);">
         <span>dismascapacidad.com.ar</span>
-        <span>wa.me/5493513466348</span>
+        <span>wa.me/5493512926315</span>
       </div>
     </div>
   </div>
@@ -1154,7 +1165,7 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 <script>
 (function(){
   /* --- Config --- */
-  const WA   = '5493513466348';
+  const WA   = '5493512926315';
   const SHOP = 'https://dismascapacidad.com.ar';
 
   /* --- Elements --- */
