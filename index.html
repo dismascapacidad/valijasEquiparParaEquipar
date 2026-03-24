@@ -976,7 +976,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
       </div>
     </div>
     <div class="caso-vid">
-      <video src="assets/video/CASO_1.mp4" controls preload="metadata"></video>
+      <video src="assets/video/CASO_1.mp4" controls preload="metadata" muted></video>
     </div>
   </div>
 </section>
@@ -999,7 +999,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
       </div>
     </div>
     <div class="caso-vid">
-      <video src="assets/video/CASO_2.mp4" controls preload="metadata"></video>
+      <video src="assets/video/CASO_2.mp4" controls preload="metadata" muted></video>
     </div>
   </div>
 </section>
@@ -1022,7 +1022,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
       </div>
     </div>
     <div class="caso-vid">
-      <video src="assets/video/CASO_3.mp4" controls preload="metadata"></video>
+      <video src="assets/video/CASO_3.mp4" controls preload="metadata" muted></video>
     </div>
   </div>
 </section>
@@ -1192,6 +1192,8 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
         e.target.classList.add('visible');
         const idx = slides.indexOf(e.target);
         if (idx !== -1) updateUI(idx);
+      } else {
+        e.target.querySelectorAll('video').forEach(v => { v.pause(); });
       }
     });
   }, { threshold: 0.1 });
