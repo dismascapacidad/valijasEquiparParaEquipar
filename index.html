@@ -306,6 +306,8 @@ p {font-size:var(--t-body);color:var(--c-texto);line-height:1.65;}
 .caso-vid{flex:1;background:#06060f;display:flex;align-items:center;justify-content:center;padding:clamp(1rem,2vw,2.5rem);position:relative;}
 .caso-vid video{width:100%;height:100%;max-height:85vh;object-fit:contain;border-radius:12px;}
 .caso-vid iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+.caso-terapeuta{position:absolute;top:1rem;right:1rem;height:60%;width:auto;object-fit:contain;border-radius:10px;opacity:0.85;z-index:2;border:2px solid rgba(255,255,255,0.2);box-shadow:0 4px 24px rgba(0,0,0,0.55);}
+@media(max-width:768px){.caso-terapeuta{height:25%;}}
 .caso-label{font-size:var(--t-label);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9aa0b0;margin-bottom:0.3rem;}
 .caso-field{display:flex;flex-direction:column;}
 .caso-field p{margin:0;line-height:1.55;font-size:clamp(0.82rem,1.3vw,1rem);}
@@ -1152,8 +1154,7 @@ a.supp-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.
     <div class="caso-vid">
       <video src="assets/video/CASO_4.mp4" controls preload="metadata" muted playsinline></video>
       <!-- Foto terapeuta — esquina superior derecha, 25% alto, relación de aspecto preservada -->
-      <img src="assets/img/vero.JPEG" alt="Terapeuta"
-           style="position:absolute;top:1rem;right:1rem;height:60%;width:auto;object-fit:contain;border-radius:10px;opacity:0.85;z-index:2;border:2px solid rgba(255,255,255,0.2);box-shadow:0 4px 24px rgba(0,0,0,0.55);">
+      <img src="assets/img/vero.JPEG" alt="Terapeuta" class="caso-terapeuta">
     </div>
   </div>
 </section>
